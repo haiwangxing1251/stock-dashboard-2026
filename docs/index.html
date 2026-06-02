@@ -84,8 +84,8 @@ body {
     margin-top: 12px;
     background: #2a2d3a;
 }
-.ratio-up { background: #ef5350; width: 50.0%; }
-.ratio-down { background: #66bb6a; width: 50.0%; }
+.ratio-up { background: #ef5350; width: 57.9%; }
+.ratio-down { background: #66bb6a; width: 42.1%; }
 .ratio-label { display: flex; justify-content: space-between; font-size: 12px; color: #8b8fa3; margin-top: 6px; }
 
 /* ---- Index Cards ---- */
@@ -177,7 +177,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
 <!-- Header -->
 <div class="header">
     <h1>A 股行情仪表盘</h1>
-    <p>数据来源: AKShare (东方财富) &middot; 自动更新 &middot; <span id="update-time">2026-06-02 18:39:10</span></p>
+    <p>数据来源: AKShare (东方财富) &middot; 自动更新 &middot; <span id="update-time">2026-06-02 18:40:29</span></p>
 </div>
 
 <!-- Market Overview -->
@@ -185,15 +185,15 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">📈</span> 市场总览</div>
     <div class="overview-grid">
         <div class="stat-box stat-up">
-            <div class="stat-value">2266</div>
+            <div class="stat-value">2770</div>
             <div class="stat-label">上涨</div>
         </div>
         <div class="stat-box stat-down">
-            <div class="stat-value">2266</div>
+            <div class="stat-value">2014</div>
             <div class="stat-label">下跌</div>
         </div>
         <div class="stat-box stat-flat">
-            <div class="stat-value">505</div>
+            <div class="stat-value">253</div>
             <div class="stat-label">平盘</div>
         </div>
         <div class="stat-box stat-up">
@@ -214,8 +214,8 @@ tr:hover { background: rgba(255,255,255,0.03); }
         <div class="ratio-down"></div>
     </div>
     <div class="ratio-label">
-        <span>上涨 50.0%</span>
-        <span>下跌 50.0%</span>
+        <span>上涨 57.9%</span>
+        <span>下跌 42.1%</span>
     </div>
 </div>
 
@@ -224,13 +224,49 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">📊</span> 主要指数</div>
     <div class="index-grid">
         
+        <div class="idx-card">
+            <div class="idx-name">上证指数</div>
+            <div class="idx-price" style="color:#ef5350">4075.1</div>
+            <div class="idx-change" style="color:#ef5350">+0.43%</div>
+            <div class="idx-amount">成交 16.69万亿</div>
+        </div>
+        <div class="idx-card">
+            <div class="idx-name">深证成指</div>
+            <div class="idx-price" style="color:#ef5350">15591.13</div>
+            <div class="idx-change" style="color:#ef5350">+1.63%</div>
+            <div class="idx-amount">成交 28.70万亿</div>
+        </div>
+        <div class="idx-card">
+            <div class="idx-name">创业板指</div>
+            <div class="idx-price" style="color:#e8eaed">4055.87</div>
+            <div class="idx-change" style="color:#e8eaed">0.00%</div>
+            <div class="idx-amount">成交 14.97万亿</div>
+        </div>
+        <div class="idx-card">
+            <div class="idx-name">科创50</div>
+            <div class="idx-price" style="color:#e8eaed">1690.56</div>
+            <div class="idx-change" style="color:#e8eaed">0.00%</div>
+            <div class="idx-amount">成交 2.63万亿</div>
+        </div>
+        <div class="idx-card">
+            <div class="idx-name">沪深300</div>
+            <div class="idx-price" style="color:#ef5350">4914.56</div>
+            <div class="idx-change" style="color:#ef5350">+1.45%</div>
+            <div class="idx-amount">成交 11.81万亿</div>
+        </div>
+        <div class="idx-card">
+            <div class="idx-name">上证50</div>
+            <div class="idx-price" style="color:#e8eaed">2920.27</div>
+            <div class="idx-change" style="color:#e8eaed">0.00%</div>
+            <div class="idx-amount">成交 4.97万亿</div>
+        </div>
     </div>
 </div>
 
 <!-- Two Column: Stocks + Sectors -->
 <div class="two-col">
     <div class="card">
-        <div class="card-title"><span class="icon">⭐</span> 自选股 (0)</div>
+        <div class="card-title"><span class="icon">⭐</span> 自选股 (8)</div>
         <div style="overflow-x:auto">
         <table>
             <thead>
@@ -245,7 +281,79 @@ tr:hover { background: rgba(255,255,255,0.03); }
                 </tr>
             </thead>
             <tbody>
-                <tr><td colspan="7" style="text-align:center;color:#8b8fa3">暂无数据</td></tr>
+                
+        <tr>
+            <td class="stock-name">紫金矿业</td>
+            <td>601899</td>
+            <td class="num" style="color:#ef5350">31.58</td>
+            <td class="num" style="color:#ef5350;font-weight:600">+4.60%</td>
+            <td class="num">105.26亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">比亚迪</td>
+            <td>002594</td>
+            <td class="num" style="color:#ef5350">96.76</td>
+            <td class="num" style="color:#ef5350;font-weight:600">+3.32%</td>
+            <td class="num">53.70亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">宁德时代</td>
+            <td>300750</td>
+            <td class="num" style="color:#ef5350">433.89</td>
+            <td class="num" style="color:#ef5350;font-weight:600">+3.28%</td>
+            <td class="num">168.34亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">招商银行</td>
+            <td>600036</td>
+            <td class="num" style="color:#ef5350">38.8</td>
+            <td class="num" style="color:#ef5350;font-weight:600">+1.57%</td>
+            <td class="num">48.77亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">平安银行</td>
+            <td>000001</td>
+            <td class="num" style="color:#ef5350">11.08</td>
+            <td class="num" style="color:#ef5350;font-weight:600">+0.82%</td>
+            <td class="num">9.81亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">中国平安</td>
+            <td>601318</td>
+            <td class="num" style="color:#ef5350">54.08</td>
+            <td class="num" style="color:#ef5350;font-weight:600">+0.43%</td>
+            <td class="num">42.45亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">贵州茅台</td>
+            <td>600519</td>
+            <td class="num" style="color:#66bb6a">1307.22</td>
+            <td class="num" style="color:#66bb6a;font-weight:600">-0.18%</td>
+            <td class="num">47.53亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
+        <tr>
+            <td class="stock-name">五粮液</td>
+            <td>000858</td>
+            <td class="num" style="color:#66bb6a">82.71</td>
+            <td class="num" style="color:#66bb6a;font-weight:600">-0.84%</td>
+            <td class="num">19.70亿</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0</td>
+        </tr>
             </tbody>
         </table>
         </div>
@@ -293,7 +401,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
 
 <div class="footer">
     <p>由 GitHub Actions 自动生成 &middot; WorkBuddy AI</p>
-    <p data-utc="2026-06-02T10:39:10Z"></p>
+    <p data-utc="2026-06-02T10:40:29Z"></p>
 </div>
 
 </div>
