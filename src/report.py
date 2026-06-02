@@ -283,7 +283,7 @@ def generate_stock_html(data: Dict[str, Any]) -> str:
             </div>
         </div>"""
 
-    # ============ 自选股表格（含信号） ============
+    # ============ 自选股表格（含信号+技术指标） ============
     stock_rows = ""
     for s in sorted(stocks, key=lambda x: x.get("score", 50), reverse=True):
         color = _change_color(s.get("change_pct", 0))
@@ -293,7 +293,15 @@ def generate_stock_html(data: Dict[str, Any]) -> str:
         rsi = s.get("rsi", 50)
         vol_ratio = s.get("vol_ratio", 1.0)
         amplitude = s.get("amplitude", 0)
+        macd_hist = s.get("macd_hist", 0)
+        j_val = s.get("j", 50)
         chart = _mini_chart_svg(s.get("history_5d", []), 80, 30)
+
+        # MACD柱颜色
+        macd_color = COLORS['red'] if macd_hist > 0 else COLORS['green'] if macd_hist < 0 else COLORS['text_secondary']
+        # KDJ J值颜色
+        j_color = COLORS['red'] if j_val > 80 else COLORS['green'] if j_val < 20 else COLORS['text_secondary']
+
         stock_rows += f"""
         <tr>
             <td class="stock-name">{s['name']}</td>
@@ -301,11 +309,62 @@ def generate_stock_html(data: Dict[str, Any]) -> str:
             <td class="num" style="color:{color};font-weight:600">{s.get('price', '--')}</td>
             <td class="num" style="color:{color}">{sign}</td>
             <td>{_signal_badge(signal, signal_color)}</td>
-            <td class="num" style="font-size:12px">{rsi:.0f}</td>
+            <td class="num" style="font-size:12px;color:{COLORS['accent']}">{rsi:.0f}</td>
+            <td class="num" style="font-size:12px;color:{macd_color}">{macd_hist:+.3f}</td>
+            <td class="num" style="font-size:12px;color:{j_color}">{j_val:.0f}</td>
             <td class="num" style="font-size:12px">{vol_ratio:.1f}</td>
-            <td class="num" style="font-size:12px">{amplitude:.1f}%</td>
             <td>{chart}</td>
         </tr>"""
+
+    # ============ 技术指标详情卡片 ============
+    tech_detail_cards = ""
+    for s in sorted(stocks, key=lambda x: x.get("score", 50), reverse=True):
+        bb_upper = s.get("bb_upper", 0)
+        bb_middle = s.get("bb_middle", 0)
+        bb_lower = s.get("bb_lower", 0)
+        bb_pos = s.get("bb_position", 50)
+        price = s.get("price", 0)
+        macd_val = s.get("macd", 0)
+        macd_signal = s.get("macd_signal", 0)
+        macd_hist_val = s.get("macd_hist", 0)
+        k_val = s.get("k", 50)
+        d_val = s.get("d", 50)
+        j_val = s.get("j", 50)
+
+        # 布林带进度
+        bb_pct = max(0, min(100, bb_pos))
+        # MACD柱方向
+        macd_bar_color = COLORS['red'] if macd_hist_val > 0 else COLORS['green']
+        # KDJ判断
+        if j_val > 80: kdj_signal = "超买区"
+        elif j_val > 50: kdj_signal = "偏强"
+        elif j_val > 20: kdj_signal = "偏弱"
+        else: kdj_signal = "超卖区"
+        kdj_color = COLORS['red'] if j_val > 50 else COLORS['green']
+
+        tech_detail_cards += f"""
+        <div class="tech-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                <span style="font-weight:600;font-size:14px">{s['name']}</span>
+                <span class="num" style="font-size:13px;font-weight:600;color:{_change_color(s.get('change_pct',0))}">{s.get('price','--')}</span>
+            </div>
+            <div class="tech-row"><span class="tech-label">MACD</span>
+                <span class="num" style="font-size:11px;color:{COLORS['accent']}">DIF:{macd_val:.3f}</span>
+                <span class="num" style="font-size:11px;color:{COLORS['text_secondary']}">DEA:{macd_signal:.3f}</span>
+                <span class="num" style="font-size:11px;color:{macd_bar_color};font-weight:600">柱:{macd_hist_val:+.3f}</span>
+            </div>
+            <div class="tech-row"><span class="tech-label">KDJ</span>
+                <span class="num" style="font-size:11px">K:{k_val:.0f} D:{d_val:.0f}</span>
+                <span class="num" style="font-size:11px;color:{kdj_color};font-weight:600">J:{j_val:.0f}({kdj_signal})</span>
+            </div>
+            <div class="tech-row"><span class="tech-label">布林带</span>
+                <span class="num" style="font-size:11px;color:{COLORS['red']}">{bb_upper}</span>
+                <span class="num" style="font-size:11px;color:{COLORS['text_secondary']}">{bb_middle}</span>
+                <span class="num" style="font-size:11px;color:{COLORS['green']}">{bb_lower}</span>
+            </div>
+            <div class="bb-bar"><div class="bb-bar-fill" style="width:{bb_pct}%;left:{bb_pct * 0.8}%"></div>
+                <div class="bb-marker" style="left:{bb_pct}%">{price}</div></div>
+        </div>"""
 
     # ============ 板块排名（ETF替代） ============
     sector_rows = ""
@@ -566,6 +625,47 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
     .sentiment-score {{ font-size: 36px; }}
 }}
 
+/* ---- Tech Detail Card ---- */
+.tech-grid {{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+}}
+.tech-card {{
+    padding: 14px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid {COLORS['card_border']};
+}}
+.tech-row {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    margin-bottom: 6px;
+}}
+.tech-label {{
+    font-weight: 600;
+    color: {COLORS['text_secondary']};
+    min-width: 50px;
+}}
+.bb-bar {{
+    position: relative;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, {COLORS['green']}33, {COLORS['gold']}33 50%, {COLORS['red']}33);
+    margin-top: 6px;
+}}
+.bb-marker {{
+    position: absolute;
+    top: -6px;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: {COLORS['accent']};
+    white-space: nowrap;
+}}
+
 /* ---- Footer ---- */
 .footer {{
     text-align: center;
@@ -659,7 +759,14 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
     </div>
 </div>
 
-<!-- Two Column: Stocks + Sectors -->
+<!-- Technical Indicator Details -->
+<div class="card">
+    <div class="card-title"><span class="icon">🔬</span> 技术指标详情 <span style="font-size:12px;color:{COLORS['text_secondary']};font-weight:400;margin-left:auto">MACD / KDJ / 布林带</span></div>
+    <div class="tech-grid">
+        {tech_detail_cards if tech_detail_cards else '<div style="text-align:center;color:#8b8fa3;padding:20px">暂无数据</div>'}
+    </div>
+</div>
+
 <div class="two-col">
     <div class="card">
         <div class="card-title"><span class="icon">⭐</span> 自选股 <span style="font-size:12px;color:{COLORS['text_secondary']};font-weight:400">含技术信号</span></div>
@@ -673,13 +780,14 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
                     <th style="text-align:right">涨跌</th>
                     <th>信号</th>
                     <th style="text-align:right">RSI</th>
+                    <th style="text-align:right">MACD</th>
+                    <th style="text-align:right">KDJ-J</th>
                     <th style="text-align:right">量比</th>
-                    <th style="text-align:right">振幅</th>
                     <th>5日</th>
                 </tr>
             </thead>
             <tbody>
-                {stock_rows if stock_rows else '<tr><td colspan="9" style="text-align:center;color:#8b8fa3">暂无数据</td></tr>'}
+                {stock_rows if stock_rows else '<tr><td colspan="10" style="text-align:center;color:#8b8fa3">暂无数据</td></tr>'}
             </tbody>
         </table>
         </div>

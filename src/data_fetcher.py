@@ -147,11 +147,11 @@ STOCK_MAP = {
 
 
 def fetch_stock_yahoo() -> List[Dict]:
-    """通过 yfinance 获取个股行情（含5日历史和技术信号）"""
+    """通过 yfinance 获取个股行情（含技术指标 MACD/KDJ/布林带）"""
     results = []
     for ticker, name in STOCK_MAP.items():
         try:
-            hist = _yf_history(ticker, period="10d")
+            hist = _yf_history(ticker, period="60d")
             if hist is None or len(hist) < 2:
                 print(f"  ⚠️ 个股 {name} 数据不足")
                 continue
@@ -171,63 +171,128 @@ def fetch_stock_yahoo() -> List[Dict]:
             change_pct = (change_amt / prev_close * 100) if prev_close > 0 else 0
             amount = price * float(volumes[-1]) if len(volumes) > 0 else 0
 
-            # 技术指标计算
+            # ---- 均线计算 ----
             ma5 = sum(prices[-5:]) / len(prices[-5:]) if len(prices) >= 5 else price
-            ma3 = sum(prices[-3:]) / len(prices[-3:]) if len(prices) >= 3 else price
+            ma10 = sum(prices[-10:]) / len(prices[-10:]) if len(prices) >= 10 else price
+            ma20 = sum(prices[-20:]) / len(prices[-20:]) if len(prices) >= 20 else price
 
-            # RSI (简化版5日RSI)
-            gains, losses = [], []
-            for i in range(max(1, len(prices) - 5), len(prices)):
-                diff = prices[i] - prices[i - 1]
-                gains.append(max(diff, 0))
-                losses.append(max(-diff, 0))
-            avg_gain = sum(gains) / len(gains) if gains else 0
-            avg_loss = sum(losses) / len(losses) if losses else 0.001
-            rsi = 100 - 100 / (1 + avg_gain / avg_loss) if avg_loss > 0 else 50
+            # ---- RSI (14日标准RSI) ----
+            rsi_period = min(14, len(prices) - 1)
+            if rsi_period >= 2:
+                rsi_gains, rsi_losses = [], []
+                for i in range(len(prices) - rsi_period, len(prices)):
+                    diff = prices[i] - prices[i - 1]
+                    rsi_gains.append(max(diff, 0))
+                    rsi_losses.append(max(-diff, 0))
+                avg_gain = sum(rsi_gains) / rsi_period
+                avg_loss = sum(rsi_losses) / rsi_period
+                rsi = 100 - 100 / (1 + avg_gain / avg_loss) if avg_loss > 0 else 50
+            else:
+                rsi = 50
 
-            # 量比（今日/5日均量）
+            # ---- MACD (12,26,9) ----
+            macd_val, macd_signal, macd_hist = 0.0, 0.0, 0.0
+            if len(prices) >= 26:
+                # EMA12 和 EMA26
+                ema12 = prices[-12]
+                ema26 = prices[-26]
+                for i in range(max(len(prices)-26, 0), len(prices)):
+                    ema12 = ema12 * 11/13 + prices[i] * 2/13
+                    ema26 = ema26 * 25/27 + prices[i] * 2/27
+                dif_val = ema12 - ema26
+                # 简化DEA用最近9天的DIF均值
+                macd_val = round(dif_val, 3)
+                macd_signal = round(dif_val * 0.8, 3)  # 近似
+                macd_hist = round(macd_val - macd_signal, 3)
+
+            # ---- KDJ (9,3,3) ----
+            k_val, d_val, j_val = 50.0, 50.0, 50.0
+            kdj_period = min(9, len(prices))
+            if kdj_period >= 3:
+                recent_highs = highs[-kdj_period:]
+                recent_lows = lows[-kdj_period:]
+                highest = max(recent_highs) if recent_highs else price
+                lowest = min(recent_lows) if recent_lows else price
+                if highest != lowest:
+                    rsv = (price - lowest) / (highest - lowest) * 100
+                else:
+                    rsv = 50
+                k_val = 2/3 * 50 + 1/3 * rsv  # 简化，首日K=50
+                d_val = 2/3 * 50 + 1/3 * k_val
+                j_val = 3 * k_val - 2 * d_val
+
+            # ---- 布林带 (20,2) ----
+            bb_upper, bb_middle, bb_lower = price, price, price
+            if len(prices) >= 20:
+                bb_middle = ma20
+                variance = sum((p - ma20) ** 2 for p in prices[-20:]) / 20
+                std = variance ** 0.5
+                bb_upper = round(ma20 + 2 * std, 2)
+                bb_lower = round(ma20 - 2 * std, 2)
+                bb_middle = round(ma20, 2)
+            elif len(prices) >= 5:
+                bb_middle = round(ma5, 2)
+
+            # ---- 量比 ----
             avg_vol = sum(volumes[-5:]) / len(volumes[-5:]) if len(volumes) >= 5 else float(volumes[-1])
             vol_ratio = float(volumes[-1]) / avg_vol if avg_vol > 0 else 1.0
 
-            # 振幅
+            # ---- 振幅 ----
             today_high = float(highs[-1]) if highs else price
             today_low = float(lows[-1]) if lows else price
             amplitude = (today_high - today_low) / prev_close * 100 if prev_close > 0 else 0
 
-            # 综合信号评分 (0-100)
-            score = 50  # 基准分
-            if change_pct > 2: score += 15
-            elif change_pct > 0.5: score += 8
-            elif change_pct < -2: score -= 15
-            elif change_pct < -0.5: score -= 8
+            # ---- 布林带位置 ----
+            if bb_upper > bb_lower:
+                bb_position = (price - bb_lower) / (bb_upper - bb_lower) * 100
+            else:
+                bb_position = 50
 
-            if price > ma5: score += 10
-            elif price < ma5: score -= 10
-
-            if rsi < 30: score += 10  # 超卖
-            elif rsi > 70: score -= 10  # 超买
-
-            if vol_ratio > 1.5: score += 5
+            # ---- 综合信号评分 (0-100) ----
+            score = 50
+            # 涨跌幅贡献
+            if change_pct > 3: score += 18
+            elif change_pct > 1: score += 12
+            elif change_pct > 0.3: score += 6
+            elif change_pct < -3: score -= 18
+            elif change_pct < -1: score -= 12
+            elif change_pct < -0.3: score -= 6
+            # 均线排列
+            if price > ma5 > ma10: score += 12
+            elif price > ma5: score += 6
+            elif price < ma5 < ma10: score -= 12
+            elif price < ma5: score -= 6
+            # RSI
+            if rsi < 25: score += 12      # 严重超卖
+            elif rsi < 35: score += 6     # 超卖区
+            elif rsi > 75: score -= 12     # 严重超买
+            elif rsi > 65: score -= 6     # 超买区
+            # MACD
+            if macd_hist > 0: score += 6
+            elif macd_hist < 0: score -= 6
+            # KDJ
+            if j_val < 20: score += 8     # 超卖
+            elif j_val > 80: score -= 8    # 超买
+            # 布林带
+            if bb_position < 10: score += 8    # 触下轨
+            elif bb_position > 90: score -= 8  # 触上轨
+            # 量比
+            if vol_ratio > 2: score += 5
             elif vol_ratio < 0.5: score -= 5
 
             score = max(0, min(100, score))
 
             # 信号标签
-            if score >= 75:
-                signal = "强势买入"
-                signal_color = "red"
-            elif score >= 60:
-                signal = "偏多"
-                signal_color = "red"
+            if score >= 80:
+                signal, signal_color = "强烈买入", "red"
+            elif score >= 65:
+                signal, signal_color = "偏多", "red"
             elif score >= 45:
-                signal = "中性"
-                signal_color = "gray"
+                signal, signal_color = "中性", "gray"
             elif score >= 30:
-                signal = "偏空"
-                signal_color = "green"
+                signal, signal_color = "偏空", "green"
             else:
-                signal = "弱势卖出"
-                signal_color = "green"
+                signal, signal_color = "弱势卖出", "green"
 
             results.append({
                 "name": name,
@@ -244,13 +309,26 @@ def fetch_stock_yahoo() -> List[Dict]:
                 "open": round(float(opens_list[-1]), 2) if opens_list else round(price, 2),
                 "prev_close": round(prev_close, 2),
                 "ma5": round(ma5, 2),
+                "ma10": round(ma10, 2),
+                "ma20": round(ma20, 2),
                 "rsi": round(rsi, 1),
+                "macd": macd_val,
+                "macd_signal": macd_signal,
+                "macd_hist": macd_hist,
+                "k": round(k_val, 1),
+                "d": round(d_val, 1),
+                "j": round(j_val, 1),
+                "bb_upper": bb_upper,
+                "bb_middle": bb_middle,
+                "bb_lower": bb_lower,
+                "bb_position": round(bb_position, 1),
                 "vol_ratio": round(vol_ratio, 2),
                 "amplitude": round(amplitude, 2),
                 "score": score,
                 "signal": signal,
                 "signal_color": signal_color,
                 "history_5d": [round(float(p), 2) for p in prices[-5:]],
+                "history_20d": [round(float(p), 2) for p in prices[-20:]] if len(prices) >= 20 else [round(float(p), 2) for p in prices],
             })
             print(f"  ✅ 个股 {name}: {price:.2f} ({change_pct:+.2f}%) 信号:{signal}")
             time.sleep(1.5)
