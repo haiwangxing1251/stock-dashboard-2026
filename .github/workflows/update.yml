@@ -4,7 +4,7 @@
 # 交易时段每30分钟：
 #   1. 从 AKShare (东方财富) 抓取最新 A 股行情
 #   2. 生成自包含 HTML 仪表盘 → docs/index.html
-#   3. 部署到 GitHub Pages
+#   3. 报告保存到 docs/ 文件夹（GitHub Pages 直接从 main 分支 docs/ 读取）
 #
 # 无需任何 API Key，全部免费。
 # ============================================================
@@ -29,12 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: 检出代码
@@ -67,14 +61,4 @@ jobs:
             echo "数据无变化，跳过提交"
           fi
 
-      - name: 配置 GitHub Pages
-        uses: actions/configure-pages@v4
-
-      - name: 上传页面制品
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: 'docs'
-
-      - name: 部署到 GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # Pages 直接从 main 分支的 /docs 文件夹读取，无需额外部署步骤
