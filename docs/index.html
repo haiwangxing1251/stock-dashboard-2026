@@ -80,8 +80,8 @@ body {
     height: 8px; border-radius: 4px; overflow: hidden; display: flex;
     margin-top: 12px; background: #2a2d3a;
 }
-.ratio-up { background: #ef5350; width: 50.0%; }
-.ratio-down { background: #66bb6a; width: 50.0%; }
+.ratio-up { background: #ef5350; width: 61.1%; }
+.ratio-down { background: #66bb6a; width: 38.9%; }
 .ratio-label { display: flex; justify-content: space-between; font-size: 12px; color: #8b8fa3; margin-top: 6px; }
 
 /* ---- Sentiment ---- */
@@ -97,14 +97,14 @@ body {
 .sentiment-score {
     font-size: 48px;
     font-weight: 800;
-    color: #8b8fa3;
+    color: #ef5350;
     line-height: 1;
 }
 .sentiment-label {
     font-size: 16px;
     font-weight: 600;
     margin-top: 8px;
-    color: #8b8fa3;
+    color: #ef5350;
 }
 .sentiment-desc {
     font-size: 13px;
@@ -122,7 +122,7 @@ body {
 .sentiment-bar-fill {
     height: 100%;
     border-radius: 5px;
-    width: 50%;
+    width: 70%;
     background: linear-gradient(90deg, #66bb6a, #ffd54f 50%, #ef5350);
 }
 .analysis-text {
@@ -246,7 +246,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
 <!-- Header -->
 <div class="header">
     <h1>A 股行情仪表盘</h1>
-    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-06-02 19:02:17</span></p>
+    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-06-02 19:06:55</span></p>
 </div>
 
 <!-- Market Overview -->
@@ -254,11 +254,11 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">📈</span> 市场总览</div>
     <div class="overview-grid">
         <div class="stat-box stat-up">
-            <div class="stat-value">2266</div>
+            <div class="stat-value">2770</div>
             <div class="stat-label">上涨</div>
         </div>
         <div class="stat-box stat-down">
-            <div class="stat-value">2266</div>
+            <div class="stat-value">1762</div>
             <div class="stat-label">下跌</div>
         </div>
         <div class="stat-box stat-flat">
@@ -283,8 +283,8 @@ tr:hover { background: rgba(255,255,255,0.03); }
         <div class="ratio-down"></div>
     </div>
     <div class="ratio-label">
-        <span>上涨 50.0%</span>
-        <span>下跌 50.0%</span>
+        <span>上涨 61.1%</span>
+        <span>下跌 38.9%</span>
     </div>
 </div>
 
@@ -293,18 +293,21 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">🧠</span> 市场情绪分析</div>
     <div class="sentiment-section">
         <div class="sentiment-gauge">
-            <div class="sentiment-score">50</div>
-            <div class="sentiment-label">数据不足</div>
-            <div class="sentiment-desc">无指数数据</div>
+            <div class="sentiment-score">70</div>
+            <div class="sentiment-label">偏多</div>
+            <div class="sentiment-desc">多数指数上涨，市场情绪积极</div>
             <div class="sentiment-bar-bg">
                 <div class="sentiment-bar-fill"></div>
             </div>
         </div>
         <div class="analysis-text">
-📌 **市场情绪：数据不足**（综合评分 50/100）
-   无指数数据
+📌 **市场情绪：偏多**（综合评分 70/100）
+   多数指数上涨，市场情绪积极
+📈 **领涨指数**：深证成指(+1.63%)、沪深300(+1.45%)
+🔥 **强势个股**：比亚迪(强势买入)、紫金矿业(强势买入)
+🏢 **活跃板块ETF**：创新药ETF(+3.23%)、创业板ETF(+2.70%)、深证100ETF(+2.39%)
 
-💡 **操作建议**：市场方向不明，建议观望为主，轻仓操作，注意风险控制。
+💡 **操作建议**：市场整体偏强，可关注强势股回调机会，控制仓位不超过7成。
 
 _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
         </div>
@@ -316,6 +319,51 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
     <div class="card-title"><span class="icon">📊</span> 主要指数 <span style="font-size:12px;color:#8b8fa3;font-weight:400;margin-left:auto">含趋势分析 & 5日走势</span></div>
     <div class="index-grid">
         
+        <div class="idx-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="idx-name">上证指数</div>
+                <span class="trend-tag" style="color:#ff9800;background:#ff980018;border:1px solid #ff980033">触底反弹</span>
+            </div>
+            <div class="idx-price" style="color:#ef5350">4075.1</div>
+            <div class="idx-change" style="color:#ef5350">+0.43%</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+                <div class="idx-amount">MA5 跌破</div>
+                <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
+  <polyline points="0.0,6.3 30.0,2.0 60.0,28.5 90.0,38.0 120.0,22.7" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="22.7" r="3" fill="#66bb6a"/>
+</svg></div>
+            </div>
+        </div>
+        <div class="idx-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="idx-name">深证成指</div>
+                <span class="trend-tag" style="color:#ff9800;background:#ff980018;border:1px solid #ff980033">触底反弹</span>
+            </div>
+            <div class="idx-price" style="color:#ef5350">15591.13</div>
+            <div class="idx-change" style="color:#ef5350">+1.63%</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+                <div class="idx-amount">MA5 跌破</div>
+                <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
+  <polyline points="0.0,10.7 30.0,2.0 60.0,21.8 90.0,38.0 120.0,20.7" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="20.7" r="3" fill="#66bb6a"/>
+</svg></div>
+            </div>
+        </div>
+        <div class="idx-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="idx-name">沪深300</div>
+                <span class="trend-tag" style="color:#ef5350;background:#ef535018;border:1px solid #ef535033">上升趋势</span>
+            </div>
+            <div class="idx-price" style="color:#ef5350">4914.56</div>
+            <div class="idx-change" style="color:#ef5350">+1.45%</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+                <div class="idx-amount">MA5 站上</div>
+                <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
+  <polyline points="0.0,5.3 30.0,2.2 60.0,13.5 90.0,38.0 120.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="2.0" r="3" fill="#ef5350"/>
+</svg></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -339,7 +387,119 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
                 </tr>
             </thead>
             <tbody>
-                <tr><td colspan="9" style="text-align:center;color:#8b8fa3">暂无数据</td></tr>
+                
+        <tr>
+            <td class="stock-name">比亚迪</td>
+            <td style="font-size:12px;color:#8b8fa3">002594</td>
+            <td class="num" style="color:#ef5350;font-weight:600">96.76</td>
+            <td class="num" style="color:#ef5350">+3.32%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">强势买入</span></td>
+            <td class="num" style="font-size:12px">51</td>
+            <td class="num" style="font-size:12px">1.2</td>
+            <td class="num" style="font-size:12px">2.7%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,14.9 20.0,9.4 40.0,6.8 60.0,28.0 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">紫金矿业</td>
+            <td style="font-size:12px;color:#8b8fa3">601899</td>
+            <td class="num" style="color:#ef5350;font-weight:600">31.58</td>
+            <td class="num" style="color:#ef5350">+4.60%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">强势买入</span></td>
+            <td class="num" style="font-size:12px">34</td>
+            <td class="num" style="font-size:12px">1.2</td>
+            <td class="num" style="font-size:12px">5.4%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,2.0 20.0,18.5 40.0,23.5 60.0,28.0 80.0,2.7" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.7" r="3" fill="#66bb6a"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">招商银行</td>
+            <td style="font-size:12px;color:#8b8fa3">600036</td>
+            <td class="num" style="color:#ef5350;font-weight:600">38.8</td>
+            <td class="num" style="color:#ef5350">+1.57%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px">50</td>
+            <td class="num" style="font-size:12px">1.1</td>
+            <td class="num" style="font-size:12px">2.2%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,28.0 20.0,26.3 40.0,13.4 60.0,10.7 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">宁德时代</td>
+            <td style="font-size:12px;color:#8b8fa3">300750</td>
+            <td class="num" style="color:#ef5350;font-weight:600">433.89</td>
+            <td class="num" style="color:#ef5350">+3.28%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px">90</td>
+            <td class="num" style="font-size:12px">0.9</td>
+            <td class="num" style="font-size:12px">3.5%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,28.0 20.0,26.8 40.0,15.5 60.0,20.8 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">贵州茅台</td>
+            <td style="font-size:12px;color:#8b8fa3">600519</td>
+            <td class="num" style="color:#66bb6a;font-weight:600">1307.22</td>
+            <td class="num" style="color:#66bb6a">-0.18%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px">64</td>
+            <td class="num" style="font-size:12px">0.6</td>
+            <td class="num" style="font-size:12px">1.9%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,14.0 20.0,28.0 40.0,2.0 60.0,10.5 80.0,11.8" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="11.8" r="3" fill="#ef5350"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">中国平安</td>
+            <td style="font-size:12px;color:#8b8fa3">601318</td>
+            <td class="num" style="color:#ef5350;font-weight:600">54.08</td>
+            <td class="num" style="color:#ef5350">+0.43%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px">47</td>
+            <td class="num" style="font-size:12px">0.9</td>
+            <td class="num" style="font-size:12px">1.7%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,15.1 20.0,28.0 40.0,11.4 60.0,5.7 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">平安银行</td>
+            <td style="font-size:12px;color:#8b8fa3">000001</td>
+            <td class="num" style="color:#ef5350;font-weight:600">11.08</td>
+            <td class="num" style="color:#ef5350">+0.82%</td>
+            <td><span class="signal-badge" style="background:#e8eaed22;color:#e8eaed;border:1px solid #e8eaed44">中性</span></td>
+            <td class="num" style="font-size:12px">76</td>
+            <td class="num" style="font-size:12px">0.9</td>
+            <td class="num" style="font-size:12px">1.5%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,21.8 20.0,28.0 40.0,11.3 60.0,7.6 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
+</svg></td>
+        </tr>
+        <tr>
+            <td class="stock-name">五粮液</td>
+            <td style="font-size:12px;color:#8b8fa3">000858</td>
+            <td class="num" style="color:#66bb6a;font-weight:600">82.71</td>
+            <td class="num" style="color:#66bb6a">-0.84%</td>
+            <td><span class="signal-badge" style="background:#66bb6a22;color:#66bb6a;border:1px solid #66bb6a44">偏空</span></td>
+            <td class="num" style="font-size:12px">46</td>
+            <td class="num" style="font-size:12px">0.6</td>
+            <td class="num" style="font-size:12px">1.9%</td>
+            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
+  <polyline points="0.0,9.6 20.0,28.0 40.0,2.0 60.0,13.3 80.0,18.7" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="18.7" r="3" fill="#66bb6a"/>
+</svg></td>
+        </tr>
             </tbody>
         </table>
         </div>
@@ -357,7 +517,82 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
                 </tr>
             </thead>
             <tbody>
-                <tr><td colspan="3" style="text-align:center;color:#8b8fa3">暂无数据</td></tr>
+                
+        <tr>
+            <td class="sector-name">创新药ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+3.23%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:100.0%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">创业板ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+2.70%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:83.59133126934985%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">深证100ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+2.39%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:73.9938080495356%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">半导体ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.66%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:51.39318885448916%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">科创50ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.54%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:47.6780185758514%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">沪深300ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.40%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:43.34365325077399%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">沪深300ETF(华)<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.22%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:37.77089783281733%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">上证50ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.84%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:26.006191950464398%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">黄金ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">商品ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.71%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:21.98142414860681%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">新能源车ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.57%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:17.64705882352941%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">中证500ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.43%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:13.312693498452013%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">中证1000ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.27%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:8.359133126934985%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">证券ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.19%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:5.88235294117647%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">军工ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.16%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:4.953560371517028%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">医药ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-1.18%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:36.53250773993808%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
             </tbody>
         </table>
         </div>
@@ -387,7 +622,7 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
 
 <div class="footer">
     <p>由 GitHub Actions 自动生成 &middot; WorkBuddy AI</p>
-    <p data-utc="2026-06-02T11:02:17Z"></p>
+    <p data-utc="2026-06-02T11:06:55Z"></p>
 </div>
 
 </div>
