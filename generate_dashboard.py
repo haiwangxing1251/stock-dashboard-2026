@@ -3,11 +3,11 @@ A股行情仪表盘 — 主入口
 ========================
 
 供 GitHub Actions 定时调用：
-  1. 从 AKShare 抓取最新 A 股行情数据
+  1. 从 yfinance (Yahoo Finance) 抓取最新 A 股行情数据
   2. 生成自包含 HTML 仪表盘 → docs/index.html
 
-依赖: akshare, pandas
-无 API Key，全部免费。
+依赖: yfinance
+无 API Key，全部免费，全球可用。
 """
 
 import json

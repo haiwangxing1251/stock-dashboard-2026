@@ -1,8 +1,8 @@
 """
-股市数据抓取模块（全球可用版）
-==============================
+股市数据抓取模块（全球可用版 + 分析增强）
+==========================================
 使用 yfinance (Yahoo Finance) 抓取 A 股行情数据，全球服务器均可访问。
-内置重试机制和请求间隔，避免触发限流。
+增强版：获取多日历史数据用于趋势分析，用板块 ETF 替代行业板块数据。
 """
 
 import json
@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Any
 
 
-# ============ 安全浮点转换 ============
+# ============ 工具函数 ============
 def _safe_float(val, default=0.0):
     try:
         return float(val) if val is not None else default
@@ -21,16 +21,13 @@ def _safe_float(val, default=0.0):
 
 
 # ============ yfinance 请求封装（带重试+延迟） ============
-
 _YF_SESSION = None
 
 
 def _get_yf_session():
-    """获取或创建 yfinance session，复用连接减少限流风险"""
     global _YF_SESSION
     if _YF_SESSION is None:
         try:
-            import yfinance as yf
             from requests import Session
             _YF_SESSION = Session()
             _YF_SESSION.headers.update({
@@ -41,20 +38,20 @@ def _get_yf_session():
     return _YF_SESSION
 
 
-def _yf_history(ticker: str, retries: int = 3, delay: float = 2.0):
+def _yf_history(ticker: str, period: str = "10d", interval: str = "1d", retries: int = 3, delay: float = 2.0):
     """获取历史行情，带重试和延迟"""
     import yfinance as yf
     for attempt in range(retries):
         try:
             t = yf.Ticker(ticker, session=_get_yf_session())
-            hist = t.history(period="5d", interval="1d")
+            hist = t.history(period=period, interval=interval)
             if hist is not None and len(hist) >= 1:
                 return hist
         except Exception as e:
             err_msg = str(e).lower()
             if "too many requests" in err_msg or "rate" in err_msg:
                 wait = delay * (attempt + 1) * 2
-                print(f"    ⏳ {ticker} 限流，等待 {wait}s 后重试...")
+                print(f"    ⏳ {ticker} 限流，等待 {wait}s...")
                 time.sleep(wait)
             else:
                 print(f"    ⚠️ {ticker} 请求失败: {str(e)[:80]}")
@@ -63,7 +60,6 @@ def _yf_history(ticker: str, retries: int = 3, delay: float = 2.0):
 
 
 def _yf_info(ticker: str, retries: int = 2, delay: float = 1.5):
-    """获取 ticker info，带重试"""
     import yfinance as yf
     for attempt in range(retries):
         try:
@@ -78,8 +74,7 @@ def _yf_info(ticker: str, retries: int = 2, delay: float = 1.5):
     return {}
 
 
-# ============ 指数行情 ============
-
+# ============ 指数行情（含历史） ============
 INDEX_MAP = {
     "000001.SS": {"name": "上证指数", "code": "000001"},
     "399001.SZ": {"name": "深证成指", "code": "399001"},
@@ -91,16 +86,17 @@ INDEX_MAP = {
 
 
 def fetch_index_yahoo() -> List[Dict]:
-    """通过 yfinance 获取指数行情"""
+    """通过 yfinance 获取指数行情（含5日历史）"""
     results = []
     for ticker, meta in INDEX_MAP.items():
         try:
-            hist = _yf_history(ticker)
-            if hist is None or len(hist) < 1:
-                print(f"  ⚠️ 指数 {meta['name']} 无数据")
+            hist = _yf_history(ticker, period="10d")
+            if hist is None or len(hist) < 2:
+                print(f"  ⚠️ 指数 {meta['name']} 数据不足")
                 continue
 
             prices = hist["Close"].tolist()
+            volumes = hist["Volume"].tolist()
             price = float(prices[-1])
             prev_close = float(prices[-2]) if len(prices) >= 2 else price
             if prev_close == 0:
@@ -109,12 +105,11 @@ def fetch_index_yahoo() -> List[Dict]:
             change_amt = price - prev_close if prev_close > 0 else 0
             change_pct = (change_amt / prev_close * 100) if prev_close > 0 else 0
 
-            # 获取成交量
-            try:
-                volume = hist["Volume"].iloc[-1]
-                amount = price * float(volume)
-            except Exception:
-                amount = 0
+            amount = price * float(volumes[-1]) if len(volumes) > 0 else 0
+
+            # 计算均线和趋势
+            ma5 = sum(prices[-5:]) / len(prices[-5:]) if len(prices) >= 5 else price
+            ma3 = sum(prices[-3:]) / len(prices[-3:]) if len(prices) >= 3 else price
 
             results.append({
                 "name": meta["name"],
@@ -123,9 +118,14 @@ def fetch_index_yahoo() -> List[Dict]:
                 "change_pct": round(change_pct, 2),
                 "change_amt": round(change_amt, 2),
                 "amount": round(amount, 2),
+                "ma5": round(ma5, 2),
+                "ma3": round(ma3, 2),
+                "above_ma5": price > ma5,
+                "above_ma3": price > ma3,
+                "history_5d": [round(float(p), 2) for p in prices[-5:]],
             })
             print(f"  ✅ 指数 {meta['name']}: {price:.2f} ({change_pct:+.2f}%)")
-            time.sleep(1.5)  # 请求间隔
+            time.sleep(1.5)
 
         except Exception as e:
             print(f"  ❌ 指数 {meta['name']}: {str(e)[:80]}")
@@ -133,8 +133,7 @@ def fetch_index_yahoo() -> List[Dict]:
     return results
 
 
-# ============ 个股行情 ============
-
+# ============ 个股行情（含历史+信号） ============
 STOCK_MAP = {
     "600519.SS": "贵州茅台",
     "000858.SZ": "五粮液",
@@ -148,16 +147,21 @@ STOCK_MAP = {
 
 
 def fetch_stock_yahoo() -> List[Dict]:
-    """通过 yfinance 获取个股行情"""
+    """通过 yfinance 获取个股行情（含5日历史和技术信号）"""
     results = []
     for ticker, name in STOCK_MAP.items():
         try:
-            hist = _yf_history(ticker)
-            if hist is None or len(hist) < 1:
-                print(f"  ⚠️ 个股 {name} 无数据")
+            hist = _yf_history(ticker, period="10d")
+            if hist is None or len(hist) < 2:
+                print(f"  ⚠️ 个股 {name} 数据不足")
                 continue
 
             prices = hist["Close"].tolist()
+            volumes = hist["Volume"].tolist()
+            highs = hist["High"].tolist()
+            lows = hist["Low"].tolist()
+            opens_list = hist["Open"].tolist()
+
             price = float(prices[-1])
             prev_close = float(prices[-2]) if len(prices) >= 2 else price
             if prev_close == 0:
@@ -165,13 +169,65 @@ def fetch_stock_yahoo() -> List[Dict]:
 
             change_amt = price - prev_close if prev_close > 0 else 0
             change_pct = (change_amt / prev_close * 100) if prev_close > 0 else 0
+            amount = price * float(volumes[-1]) if len(volumes) > 0 else 0
 
-            # 获取成交量
-            try:
-                volume = hist["Volume"].iloc[-1]
-                amount = price * float(volume)
-            except Exception:
-                amount = 0
+            # 技术指标计算
+            ma5 = sum(prices[-5:]) / len(prices[-5:]) if len(prices) >= 5 else price
+            ma3 = sum(prices[-3:]) / len(prices[-3:]) if len(prices) >= 3 else price
+
+            # RSI (简化版5日RSI)
+            gains, losses = [], []
+            for i in range(max(1, len(prices) - 5), len(prices)):
+                diff = prices[i] - prices[i - 1]
+                gains.append(max(diff, 0))
+                losses.append(max(-diff, 0))
+            avg_gain = sum(gains) / len(gains) if gains else 0
+            avg_loss = sum(losses) / len(losses) if losses else 0.001
+            rsi = 100 - 100 / (1 + avg_gain / avg_loss) if avg_loss > 0 else 50
+
+            # 量比（今日/5日均量）
+            avg_vol = sum(volumes[-5:]) / len(volumes[-5:]) if len(volumes) >= 5 else float(volumes[-1])
+            vol_ratio = float(volumes[-1]) / avg_vol if avg_vol > 0 else 1.0
+
+            # 振幅
+            today_high = float(highs[-1]) if highs else price
+            today_low = float(lows[-1]) if lows else price
+            amplitude = (today_high - today_low) / prev_close * 100 if prev_close > 0 else 0
+
+            # 综合信号评分 (0-100)
+            score = 50  # 基准分
+            if change_pct > 2: score += 15
+            elif change_pct > 0.5: score += 8
+            elif change_pct < -2: score -= 15
+            elif change_pct < -0.5: score -= 8
+
+            if price > ma5: score += 10
+            elif price < ma5: score -= 10
+
+            if rsi < 30: score += 10  # 超卖
+            elif rsi > 70: score -= 10  # 超买
+
+            if vol_ratio > 1.5: score += 5
+            elif vol_ratio < 0.5: score -= 5
+
+            score = max(0, min(100, score))
+
+            # 信号标签
+            if score >= 75:
+                signal = "强势买入"
+                signal_color = "red"
+            elif score >= 60:
+                signal = "偏多"
+                signal_color = "red"
+            elif score >= 45:
+                signal = "中性"
+                signal_color = "gray"
+            elif score >= 30:
+                signal = "偏空"
+                signal_color = "green"
+            else:
+                signal = "弱势卖出"
+                signal_color = "green"
 
             results.append({
                 "name": name,
@@ -183,13 +239,21 @@ def fetch_stock_yahoo() -> List[Dict]:
                 "turnover_rate": 0.0,
                 "pe": 0.0,
                 "pb": 0.0,
-                "high": round(price, 2),
-                "low": round(price, 2),
-                "open": round(price, 2),
+                "high": round(today_high, 2),
+                "low": round(today_low, 2),
+                "open": round(float(opens_list[-1]), 2) if opens_list else round(price, 2),
                 "prev_close": round(prev_close, 2),
+                "ma5": round(ma5, 2),
+                "rsi": round(rsi, 1),
+                "vol_ratio": round(vol_ratio, 2),
+                "amplitude": round(amplitude, 2),
+                "score": score,
+                "signal": signal,
+                "signal_color": signal_color,
+                "history_5d": [round(float(p), 2) for p in prices[-5:]],
             })
-            print(f"  ✅ 个股 {name}: {price:.2f} ({change_pct:+.2f}%)")
-            time.sleep(1.5)  # 请求间隔
+            print(f"  ✅ 个股 {name}: {price:.2f} ({change_pct:+.2f}%) 信号:{signal}")
+            time.sleep(1.5)
 
         except Exception as e:
             print(f"  ❌ 个股 {name}: {str(e)[:80]}")
@@ -197,82 +261,119 @@ def fetch_stock_yahoo() -> List[Dict]:
     return results
 
 
-# ============ 市场概况（从指数推导） ============
-
-def fetch_market_overview_yahoo() -> Dict[str, Any]:
-    """估算市场概况"""
-    try:
-        indices = fetch_index_yahoo()
-        up = sum(1 for i in indices if i.get("change_pct", 0) > 0)
-        down = sum(1 for i in indices if i.get("change_pct", 0) < 0)
-        total_stocks = 5037
-
-        if up > down:
-            total_up = int(total_stocks * 0.55)
-            total_down = int(total_stocks * 0.40)
-        elif down > up:
-            total_up = int(total_stocks * 0.40)
-            total_down = int(total_stocks * 0.55)
-        else:
-            total_up = int(total_stocks * 0.45)
-            total_down = int(total_stocks * 0.45)
-
-        total_flat = total_stocks - total_up - total_down
-
-        overview = {
-            "total_up": total_up,
-            "total_down": total_down,
-            "total_flat": total_flat,
-            "limit_up": 0,
-            "limit_down": 0,
-            "total_stocks": total_stocks,
-        }
-        print(f"  ✅ 市场概况: 上涨 {total_up} / 下跌 {total_down}")
-        return overview
-
-    except Exception as e:
-        print(f"  ⚠️ 市场概况: {str(e)[:80]}")
-        return {
-            "total_up": 0, "total_down": 0, "total_flat": 0,
-            "limit_up": 0, "limit_down": 0, "total_stocks": 0,
-        }
+# ============ 板块 ETF 替代 ============
+SECTOR_ETF_MAP = {
+    "159915.SZ": {"name": "创业板ETF", "type": "指数ETF"},
+    "510300.SS": {"name": "沪深300ETF", "type": "指数ETF"},
+    "510050.SS": {"name": "上证50ETF", "type": "指数ETF"},
+    "588000.SS": {"name": "科创50ETF", "type": "指数ETF"},
+    "159919.SZ": {"name": "沪深300ETF(华)", "type": "指数ETF"},
+    "512100.SS": {"name": "中证1000ETF", "type": "指数ETF"},
+    "159901.SZ": {"name": "深证100ETF", "type": "指数ETF"},
+    "510500.SS": {"name": "中证500ETF", "type": "指数ETF"},
+    "512880.SS": {"name": "证券ETF", "type": "行业ETF"},
+    "512010.SS": {"name": "医药ETF", "type": "行业ETF"},
+    "512660.SS": {"name": "军工ETF", "type": "行业ETF"},
+    "159934.SZ": {"name": "黄金ETF", "type": "商品ETF"},
+    "159949.SZ": {"name": "创新药ETF", "type": "行业ETF"},
+    "515030.SS": {"name": "新能源车ETF", "type": "行业ETF"},
+    "512480.SS": {"name": "半导体ETF", "type": "行业ETF"},
+}
 
 
-# ============ 板块/北向（yfinance 不支持） ============
+def fetch_sector_etf() -> List[Dict]:
+    """用 ETF 涨跌替代行业板块数据"""
+    results = []
+    for ticker, meta in SECTOR_ETF_MAP.items():
+        try:
+            hist = _yf_history(ticker, period="5d")
+            if hist is None or len(hist) < 2:
+                continue
 
-def fetch_sector_yahoo() -> List[Dict]:
-    print("  ℹ️ 板块排名: yfinance 暂不支持")
-    return []
+            prices = hist["Close"].tolist()
+            price = float(prices[-1])
+            prev_close = float(prices[-2]) if len(prices) >= 2 else price
+            if prev_close == 0:
+                prev_close = price
+
+            change_pct = ((price - prev_close) / prev_close * 100) if prev_close > 0 else 0
+
+            results.append({
+                "name": meta["name"],
+                "code": ticker.split(".")[0],
+                "change_pct": round(change_pct, 2),
+                "type": meta["type"],
+            })
+            time.sleep(1.5)
+
+        except Exception:
+            continue
+
+    # 按涨跌幅排序
+    results.sort(key=lambda x: x.get("change_pct", 0), reverse=True)
+    print(f"  ✅ 板块ETF: {len(results)} 只")
+    return results
 
 
+# ============ 北向资金（不可用，留空） ============
 def fetch_north_flow_yahoo() -> List[Dict]:
-    print("  ℹ️ 北向资金: yfinance 暂不支持")
+    print("  ℹ️ 北向资金: yfinance 暂不支持（非核心指标）")
     return []
+
+
+# ============ 市场概况 ============
+def fetch_market_overview_yahoo(indices: List[Dict] = None) -> Dict[str, Any]:
+    """从指数推导市场概况"""
+    if not indices:
+        indices = fetch_index_yahoo()
+
+    up = sum(1 for i in indices if i.get("change_pct", 0) > 0)
+    down = sum(1 for i in indices if i.get("change_pct", 0) < 0)
+    total_stocks = 5037
+
+    if up > down:
+        ratio = 0.55
+    elif down > up:
+        ratio = 0.40
+    else:
+        ratio = 0.45
+
+    total_up = int(total_stocks * ratio)
+    total_down = int(total_stocks * (1 - ratio - 0.1))
+    total_flat = total_stocks - total_up - total_down
+
+    return {
+        "total_up": total_up,
+        "total_down": total_down,
+        "total_flat": total_flat,
+        "limit_up": 0,
+        "limit_down": 0,
+        "total_stocks": total_stocks,
+    }
 
 
 # ============ 主入口 ============
-
 def fetch_all(watchlist_path: str) -> Dict[str, Any]:
     print("=" * 50)
     print("📊 股市数据抓取启动（yfinance / Yahoo Finance）")
 
     data = {}
 
-    print("📈 抓取市场概况...")
-    data["overview"] = fetch_market_overview_yahoo()
-
     print("📊 抓取指数行情...")
     data["indices"] = fetch_index_yahoo()
     print(f"   → {len(data['indices'])} 条指数")
+
+    print("📈 生成市场概况...")
+    data["overview"] = fetch_market_overview_yahoo(data["indices"])
 
     print("🔍 抓取个股行情...")
     data["stocks"] = fetch_stock_yahoo()
     print(f"   → {len(data['stocks'])} 只个股")
 
-    print("🏭 抓取板块排名...")
-    data["sectors"] = fetch_sector_yahoo()
+    print("🏭 抓取板块ETF...")
+    data["sectors"] = fetch_sector_etf()
 
-    print("💰 抓取北向资金...")
+    print("💰 北向资金...")
     data["north_flow"] = fetch_north_flow_yahoo()
 
     beijing_tz = timezone(timedelta(hours=8))
