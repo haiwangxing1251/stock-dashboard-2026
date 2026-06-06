@@ -122,7 +122,7 @@ body {
 .sentiment-bar-fill {
     height: 100%;
     border-radius: 5px;
-    width: 33%;
+    width: 35%;
     background: linear-gradient(90deg, #66bb6a, #ffd54f 50%, #ef5350);
 }
 .analysis-text {
@@ -615,7 +615,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
 <!-- Header -->
 <div class="header">
     <h1>A 股行情仪表盘</h1>
-    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-06-06 16:24:29</span></p>
+    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-06-06 16:27:28</span></p>
 </div>
 
 <!-- Market Overview -->
@@ -662,7 +662,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">🧠</span> 市场情绪分析</div>
     <div class="sentiment-section">
         <div class="sentiment-gauge">
-            <div class="sentiment-score">33</div>
+            <div class="sentiment-score">35</div>
             <div class="sentiment-label">中性偏空</div>
             <div class="sentiment-desc">多数指数下跌，需谨慎</div>
             <div class="sentiment-bar-bg">
@@ -670,10 +670,9 @@ tr:hover { background: rgba(255,255,255,0.03); }
             </div>
         </div>
         <div class="analysis-text">
-📌 **市场情绪：中性偏空**（综合评分 33/100）
+📌 **市场情绪：中性偏空**（综合评分 35/100）
    多数指数下跌，需谨慎
 📉 **领跌指数**：上证指数(-0.74%)、深证成指(-2.21%)、沪深300(-1.79%)
-⚠️ **弱势个股**：紫金矿业(弱势卖出)
 🏢 **活跃板块ETF**：医药ETF(+0.62%)、军工ETF(-0.31%)、黄金ETF(-0.45%)
 
 💡 **操作建议**：市场偏弱，建议降低仓位，关注超跌反弹机会，严格止损。
@@ -831,28 +830,6 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
         </div>
         <div class="tech-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <span style="font-weight:600;font-size:14px">贵州茅台</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">1272.86</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:-26.297</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:-21.038</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">柱:-5.259</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:43 D:48</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">J:34(偏弱)</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">1365.73</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">1310.12</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">1254.52</span>
-            </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:16.5%;left:13.200000000000001%"></div>
-                <div class="bb-marker" style="left:16.5%">1272.86</div></div>
-        </div>
-        <div class="tech-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
                 <span style="font-weight:600;font-size:14px">宁德时代</span>
                 <span class="num" style="font-size:13px;font-weight:600;color:#66bb6a">403.0</span>
             </div>
@@ -872,50 +849,6 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
             </div>
             <div class="bb-bar"><div class="bb-bar-fill" style="width:14.0%;left:11.200000000000001%"></div>
                 <div class="bb-marker" style="left:14.0%">403.0</div></div>
-        </div>
-        <div class="tech-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <span style="font-weight:600;font-size:14px">比亚迪</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#66bb6a">93.01</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:-1.662</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:-1.329</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">柱:-0.333</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:37 D:46</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">J:19(超卖区)</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">99.99</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">95.8</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">91.6</span>
-            </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:16.8%;left:13.440000000000001%"></div>
-                <div class="bb-marker" style="left:16.8%">93.01</div></div>
-        </div>
-        <div class="tech-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <span style="font-weight:600;font-size:14px">紫金矿业</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#66bb6a">29.63</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:-0.738</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:-0.591</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">柱:-0.147</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:34 D:45</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">J:13(超卖区)</span>
-            </div>
-            <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">34.64</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">31.64</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">28.63</span>
-            </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:16.6%;left:13.280000000000001%"></div>
-                <div class="bb-marker" style="left:16.6%">29.63</div></div>
         </div>
     </div>
 </div>
@@ -1004,21 +937,6 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
 </svg></td>
         </tr>
         <tr>
-            <td class="stock-name">贵州茅台</td>
-            <td style="font-size:12px;color:#8b8fa3">600519</td>
-            <td class="num" style="color:#ef5350;font-weight:600">1272.86</td>
-            <td class="num" style="color:#ef5350">+0.38%</td>
-            <td><span class="signal-badge" style="background:#66bb6a22;color:#66bb6a;border:1px solid #66bb6a44">偏空</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">39</td>
-            <td class="num" style="font-size:12px;color:#66bb6a">-5.259</td>
-            <td class="num" style="font-size:12px;color:#8b8fa3">34</td>
-            <td class="num" style="font-size:12px">0.8</td>
-            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,2.0 20.0,3.5 40.0,19.3 60.0,28.0 80.0,25.0" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="25.0" r="3" fill="#66bb6a"/>
-</svg></td>
-        </tr>
-        <tr>
             <td class="stock-name">宁德时代</td>
             <td style="font-size:12px;color:#8b8fa3">300750</td>
             <td class="num" style="color:#66bb6a;font-weight:600">403.0</td>
@@ -1030,36 +948,6 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
             <td class="num" style="font-size:12px">0.8</td>
             <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
   <polyline points="0.0,13.6 20.0,2.0 40.0,8.3 60.0,23.6 80.0,28.0" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="28.0" r="3" fill="#66bb6a"/>
-</svg></td>
-        </tr>
-        <tr>
-            <td class="stock-name">比亚迪</td>
-            <td style="font-size:12px;color:#8b8fa3">002594</td>
-            <td class="num" style="color:#66bb6a;font-weight:600">93.01</td>
-            <td class="num" style="color:#66bb6a">-0.46%</td>
-            <td><span class="signal-badge" style="background:#66bb6a22;color:#66bb6a;border:1px solid #66bb6a44">偏空</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">46</td>
-            <td class="num" style="font-size:12px;color:#66bb6a">-0.333</td>
-            <td class="num" style="font-size:12px;color:#66bb6a">19</td>
-            <td class="num" style="font-size:12px">0.8</td>
-            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,23.6 20.0,2.0 40.0,15.5 60.0,25.0 80.0,28.0" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="28.0" r="3" fill="#66bb6a"/>
-</svg></td>
-        </tr>
-        <tr>
-            <td class="stock-name">紫金矿业</td>
-            <td style="font-size:12px;color:#8b8fa3">601899</td>
-            <td class="num" style="color:#66bb6a;font-weight:600">29.63</td>
-            <td class="num" style="color:#66bb6a">-2.34%</td>
-            <td><span class="signal-badge" style="background:#66bb6a22;color:#66bb6a;border:1px solid #66bb6a44">弱势卖出</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">42</td>
-            <td class="num" style="font-size:12px;color:#66bb6a">-0.147</td>
-            <td class="num" style="font-size:12px;color:#66bb6a">13</td>
-            <td class="num" style="font-size:12px">1.1</td>
-            <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,20.5 20.0,2.0 40.0,6.1 60.0,18.5 80.0,28.0" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <circle cx="80.0" cy="28.0" r="3" fill="#66bb6a"/>
 </svg></td>
         </tr>
@@ -1183,11 +1071,6 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
 {
     "自选股": [
         {
-            "code": "600519",
-            "name": "贵州茅台",
-            "market": "sh"
-        },
-        {
             "code": "000858",
             "name": "五粮液",
             "market": "sz"
@@ -1208,18 +1091,8 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
             "market": "sz"
         },
         {
-            "code": "002594",
-            "name": "比亚迪",
-            "market": "sz"
-        },
-        {
             "code": "600036",
             "name": "招商银行",
-            "market": "sh"
-        },
-        {
-            "code": "601899",
-            "name": "紫金矿业",
             "market": "sh"
         }
     ],
@@ -1267,7 +1140,7 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
 
 <div class="footer">
     <p>由 GitHub Actions 自动生成 &middot; WorkBuddy AI</p>
-    <p data-utc="2026-06-06T08:24:29Z"></p>
+    <p data-utc="2026-06-06T08:27:28Z"></p>
 </div>
 
 </div>
@@ -1297,7 +1170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // 自选股管理
 // =====================================================
 const STORAGE_KEY = 'stockdash_watchlist';
-const DEFAULT_WATCHLIST = [{"code": "600519", "name": "贵州茅台", "market": "sh"}, {"code": "000858", "name": "五粮液", "market": "sz"}, {"code": "601318", "name": "中国平安", "market": "sh"}, {"code": "000001", "name": "平安银行", "market": "sz"}, {"code": "300750", "name": "宁德时代", "market": "sz"}, {"code": "002594", "name": "比亚迪", "market": "sz"}, {"code": "600036", "name": "招商银行", "market": "sh"}, {"code": "601899", "name": "紫金矿业", "market": "sh"}];
+const DEFAULT_WATCHLIST = [{"code": "000858", "name": "五粮液", "market": "sz"}, {"code": "601318", "name": "中国平安", "market": "sh"}, {"code": "000001", "name": "平安银行", "market": "sz"}, {"code": "300750", "name": "宁德时代", "market": "sz"}, {"code": "600036", "name": "招商银行", "market": "sh"}];
 
 function getWatchlist() {
     try {
