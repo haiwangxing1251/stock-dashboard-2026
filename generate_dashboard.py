@@ -41,6 +41,13 @@ def main():
     # 抓取所有数据
     data = fetch_all(WATCHLIST_FILE)
 
+    # 把 watchlist 原始配置也传入，供前端管理面板使用
+    try:
+        with open(WATCHLIST_FILE, "r", encoding="utf-8") as f:
+            data["watchlist_config"] = json.load(f)
+    except Exception:
+        data["watchlist_config"] = {}
+
     # 生成 HTML 报告
     print("\n📝 生成 HTML 报告...")
     html = generate_stock_html(data)

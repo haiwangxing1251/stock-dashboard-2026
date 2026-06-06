@@ -247,6 +247,11 @@ def generate_stock_html(data: Dict[str, Any]) -> str:
     north_flow = data.get("north_flow", [])
     gen_time = data.get("generated_at", "")
     gen_time_utc = data.get("generated_at_utc", "")
+    # 自选股配置（用于前端管理面板）
+    watchlist_config = data.get("watchlist_config", {})
+    default_stocks = watchlist_config.get("自选股", [{"code": s.get("code",""), "name": s.get("name",""), "market": s.get("market","sh")} for s in stocks])
+    default_watchlist_json = json.dumps(default_stocks, ensure_ascii=False)
+    full_watchlist_json = json.dumps(watchlist_config, ensure_ascii=False, indent=4)
 
     total_up = overview.get("total_up", 0)
     total_down = overview.get("total_down", 0)
@@ -683,9 +688,265 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
     color: {COLORS['gold']};
     text-align: center;
 }}
+
+/* ---- 自选股管理按钮 ---- */
+.manage-btn {{
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(21,101,192,0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}}
+.manage-btn:hover {{ transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.5); }}
+
+/* ---- 自选股管理遮罩 ---- */
+.watchlist-overlay {{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+}}
+.watchlist-overlay.open {{ display: flex; }}
+
+/* ---- 管理面板 ---- */
+.watchlist-panel {{
+    background: #1a1d29;
+    border: 1px solid #2a2d3a;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 560px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    overflow: hidden;
+}}
+.wl-header {{
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #2a2d3a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}}
+.wl-title {{ font-size: 18px; font-weight: 700; color: #e8eaed; }}
+.wl-close {{
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.08);
+    border: none; border-radius: 8px;
+    color: #8b8fa3; font-size: 18px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+}}
+.wl-close:hover {{ background: rgba(255,255,255,0.15); color: #e8eaed; }}
+
+/* ---- 添加区域 ---- */
+.wl-add-area {{
+    padding: 16px 24px;
+    border-bottom: 1px solid #2a2d3a;
+    flex-shrink: 0;
+}}
+.wl-add-title {{ font-size: 13px; font-weight: 600; color: #8b8fa3; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }}
+.wl-add-row {{ display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }}
+.wl-input {{
+    flex: 1;
+    min-width: 100px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid #3a3d4a;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #e8eaed;
+    font-size: 13px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s;
+}}
+.wl-input:focus {{ border-color: #4fc3f7; }}
+.wl-input::placeholder {{ color: #555; }}
+.wl-select {{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid #3a3d4a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: #e8eaed;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+}}
+.wl-add-btn {{
+    background: #1565c0;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background 0.15s;
+}}
+.wl-add-btn:hover {{ background: #1976d2; }}
+.wl-hint {{ font-size: 11px; color: #555; margin-top: 8px; }}
+
+/* ---- 股票列表 ---- */
+.wl-list {{
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 24px;
+}}
+.wl-list::-webkit-scrollbar {{ width: 6px; }}
+.wl-list::-webkit-scrollbar-track {{ background: transparent; }}
+.wl-list::-webkit-scrollbar-thumb {{ background: #2a2d3a; border-radius: 3px; }}
+.wl-item {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    margin-bottom: 6px;
+    transition: all 0.15s;
+}}
+.wl-item:hover {{ background: rgba(255,255,255,0.04); border-color: #2a2d3a; }}
+.wl-item.custom {{ border-color: #1565c044; background: rgba(21,101,192,0.06); }}
+.wl-tag {{
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}}
+.wl-tag.sh {{ background: #ef535020; color: #ef5350; }}
+.wl-tag.sz {{ background: #66bb6a20; color: #66bb6a; }}
+.wl-tag.new {{ background: #4fc3f720; color: #4fc3f7; }}
+.wl-item-name {{ font-size: 14px; font-weight: 600; color: #e8eaed; flex: 1; }}
+.wl-item-code {{ font-size: 12px; color: #8b8fa3; }}
+.wl-del-btn {{
+    width: 28px; height: 28px;
+    background: rgba(239,83,80,0.1);
+    border: 1px solid rgba(239,83,80,0.2);
+    border-radius: 6px;
+    color: #ef5350;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}}
+.wl-del-btn:hover {{ background: rgba(239,83,80,0.25); border-color: rgba(239,83,80,0.5); }}
+
+/* ---- 底部操作 ---- */
+.wl-footer {{
+    padding: 16px 24px;
+    border-top: 1px solid #2a2d3a;
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}}
+.wl-export-btn {{
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid #3a3d4a;
+    border-radius: 8px;
+    padding: 10px;
+    color: #8b8fa3;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}}
+.wl-export-btn:hover {{ color: #e8eaed; border-color: #8b8fa3; }}
+.wl-reset-btn {{
+    background: rgba(239,83,80,0.1);
+    border: 1px solid rgba(239,83,80,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #ef5350;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}}
+.wl-reset-btn:hover {{ background: rgba(239,83,80,0.2); }}
+.wl-toast {{
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1e2a3a;
+    border: 1px solid #4fc3f7;
+    color: #4fc3f7;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}}
+.wl-toast.show {{ opacity: 1; transform: translateX(-50%) translateY(0); }}
+
+/* 自定义股票行高亮 */
+.custom-stock-row {{ background: rgba(21,101,192,0.06); }}
 </style>
 </head>
 <body>
+
+<!-- 自选股管理按钮（固定右上角） -->
+<button class="manage-btn" onclick="openWatchlistPanel()">
+    <span>⭐</span> 管理自选股
+</button>
+
+<!-- 自选股管理弹窗 -->
+<div class="watchlist-overlay" id="watchlistOverlay" onclick="handleOverlayClick(event)">
+    <div class="watchlist-panel">
+        <div class="wl-header">
+            <span class="wl-title">⭐ 管理自选股</span>
+            <button class="wl-close" onclick="closeWatchlistPanel()">✕</button>
+        </div>
+        <div class="wl-add-area">
+            <div class="wl-add-title">➕ 添加股票</div>
+            <div class="wl-add-row">
+                <select class="wl-select" id="addMarket">
+                    <option value="sh">沪市 (sh)</option>
+                    <option value="sz">深市 (sz)</option>
+                </select>
+                <input class="wl-input" id="addCode" placeholder="股票代码，如 600519" maxlength="6" />
+                <input class="wl-input" id="addName" placeholder="名称，如 贵州茅台" maxlength="10" />
+                <button class="wl-add-btn" onclick="addStock()">添加</button>
+            </div>
+            <div class="wl-hint">💡 添加后下次 Actions 自动运行时会获取最新数据（约每30分钟）</div>
+        </div>
+        <div class="wl-list" id="watchlistItems"></div>
+        <div class="wl-footer">
+            <button class="wl-export-btn" onclick="exportConfig()">📥 导出 watchlist.json（放入仓库触发更新）</button>
+            <button class="wl-reset-btn" onclick="resetToDefault()">恢复默认</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast 提示 -->
+<div class="wl-toast" id="wlToast"></div>
+
 <div class="container">
 
 <!-- Header -->
@@ -769,7 +1030,9 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
 
 <div class="two-col">
     <div class="card">
-        <div class="card-title"><span class="icon">⭐</span> 自选股 <span style="font-size:12px;color:{COLORS['text_secondary']};font-weight:400">含技术信号</span></div>
+        <div class="card-title"><span class="icon">⭐</span> 自选股 <span style="font-size:12px;color:{COLORS['text_secondary']};font-weight:400">含技术信号</span>
+            <span id="customStockHint" style="display:none;margin-left:8px;font-size:11px;background:#1565c022;color:#4fc3f7;border:1px solid #4fc3f744;padding:2px 8px;border-radius:4px;font-weight:400">含自定义配置，重启 Actions 后生效</span>
+        </div>
         <div style="overflow-x:auto">
         <table>
             <thead>
@@ -828,6 +1091,11 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
     </table>
 </div>
 
+<!-- 嵌入自选股完整配置（供 JS 导出使用） -->
+<script id="fullWatchlistConfig" type="application/json">
+__FULL_WATCHLIST_PLACEHOLDER__
+</script>
+
 <!-- Disclaimer -->
 <div class="disclaimer">
     ⚠️ 本工具仅供学习参考，不构成任何投资建议。股市有风险，投资需谨慎。
@@ -841,6 +1109,9 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
 </div>
 
 <script>
+// =====================================================
+// 时间更新
+// =====================================================
 document.addEventListener('DOMContentLoaded', function() {{
     var utcStr = document.querySelector('.footer [data-utc]')?.dataset.utc;
     if (!utcStr) return;
@@ -857,9 +1128,146 @@ document.addEventListener('DOMContentLoaded', function() {{
     update();
     setInterval(update, 60000);
 }});
+
+// =====================================================
+// 自选股管理
+// =====================================================
+const STORAGE_KEY = 'stockdash_watchlist';
+const DEFAULT_WATCHLIST = __DEFAULT_WATCHLIST_PLACEHOLDER__;
+
+function getWatchlist() {{
+    try {{
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) return JSON.parse(saved);
+    }} catch(e) {{}}
+    return null;
+}}
+
+function saveWatchlist(list) {{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}}
+
+function isCustomized() {{
+    return !!localStorage.getItem(STORAGE_KEY);
+}}
+
+function openWatchlistPanel() {{
+    document.getElementById('watchlistOverlay').classList.add('open');
+    renderWatchlistItems();
+}}
+
+function closeWatchlistPanel() {{
+    document.getElementById('watchlistOverlay').classList.remove('open');
+    updatePageHint();
+}}
+
+function handleOverlayClick(e) {{
+    if (e.target === document.getElementById('watchlistOverlay')) closeWatchlistPanel();
+}}
+
+function renderWatchlistItems() {{
+    var current = getWatchlist() || DEFAULT_WATCHLIST;
+    var defaultCodes = DEFAULT_WATCHLIST.map(s => s.market + s.code);
+    var container = document.getElementById('watchlistItems');
+    if (!current.length) {{
+        container.innerHTML = '<div style="text-align:center;color:#555;padding:24px;font-size:13px">暂无自选股，请添加</div>';
+        return;
+    }}
+    container.innerHTML = current.map(function(s, i) {{
+        var isCustom = !defaultCodes.includes(s.market + s.code);
+        var tagClass = s.market === 'sh' ? 'sh' : 'sz';
+        var tagLabel = s.market === 'sh' ? '沪' : '深';
+        return '<div class="wl-item' + (isCustom ? ' custom' : '') + '" data-index="' + i + '">'
+            + '<span class="wl-tag ' + tagClass + '">' + tagLabel + '</span>'
+            + '<span class="wl-item-name">' + escHtml(s.name) + '</span>'
+            + '<span class="wl-item-code">' + s.code + '</span>'
+            + (isCustom ? '<span class="wl-tag new">新</span>' : '')
+            + '<button class="wl-del-btn" onclick="removeStock(' + i + ')" title="删除">×</button>'
+            + '</div>';
+    }}).join('');
+}}
+
+function addStock() {{
+    var market = document.getElementById('addMarket').value;
+    var code = document.getElementById('addCode').value.trim().replace(/\D/g,'');
+    var name = document.getElementById('addName').value.trim();
+    if (!code || code.length < 4) {{ showToast('请输入有效的股票代码（4-6位数字）'); return; }}
+    if (!name) {{ showToast('请输入股票名称'); return; }}
+    var current = getWatchlist() || [...DEFAULT_WATCHLIST];
+    if (current.some(s => s.market === market && s.code === code)) {{
+        showToast('该股票已在自选股中'); return;
+    }}
+    if (current.length >= 20) {{ showToast('自选股最多20只'); return; }}
+    current.push({{ code: code, name: name, market: market }});
+    saveWatchlist(current);
+    document.getElementById('addCode').value = '';
+    document.getElementById('addName').value = '';
+    renderWatchlistItems();
+    showToast('✅ 已添加 ' + name + '，导出配置后放入仓库触发更新');
+}}
+
+function removeStock(index) {{
+    var current = getWatchlist() || [...DEFAULT_WATCHLIST];
+    var removed = current[index];
+    current.splice(index, 1);
+    saveWatchlist(current);
+    renderWatchlistItems();
+    showToast('已移除 ' + removed.name);
+}}
+
+function resetToDefault() {{
+    if (!confirm('确定恢复为默认自选股配置吗？')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    renderWatchlistItems();
+    showToast('✅ 已恢复默认配置');
+}}
+
+function exportConfig() {{
+    var current = getWatchlist() || DEFAULT_WATCHLIST;
+    // 读取页面中嵌入的完整 watchlist（含指数和板块）
+    var fullConfig = JSON.parse(document.getElementById('fullWatchlistConfig').textContent);
+    fullConfig['自选股'] = current;
+    var json = JSON.stringify(fullConfig, null, 4);
+    var blob = new Blob([json], {{ type: 'application/json' }});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'watchlist.json';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('📥 watchlist.json 已下载，放入 data/ 目录后 push 到 GitHub 触发更新');
+}}
+
+function updatePageHint() {{
+    var hint = document.getElementById('customStockHint');
+    if (hint) hint.style.display = isCustomized() ? 'inline' : 'none';
+}}
+
+function showToast(msg) {{
+    var t = document.getElementById('wlToast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() {{ t.classList.remove('show'); }}, 3000);
+}}
+
+function escHtml(s) {{
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}}
+
+// 页面加载时检查自定义状态
+document.addEventListener('DOMContentLoaded', function() {{
+    updatePageHint();
+    // ESC 关闭面板
+    document.addEventListener('keydown', function(e) {{
+        if (e.key === 'Escape') closeWatchlistPanel();
+    }});
+}});
 </script>
 </body>
 </html>"""
+    # 注入动态 JSON（不能放在 f-string 里，因为 JSON 含花括号）
+    html = html.replace("__DEFAULT_WATCHLIST_PLACEHOLDER__", default_watchlist_json)
+    html = html.replace("__FULL_WATCHLIST_PLACEHOLDER__", full_watchlist_json)
     return html
 
 
