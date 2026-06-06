@@ -885,6 +885,64 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
     transition: all 0.15s;
 }}
 .wl-reset-btn:hover {{ background: rgba(239,83,80,0.2); }}
+.wl-sync-btn {{
+    flex: 2;
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}}
+.wl-sync-btn:hover {{ transform: translateY(-1px); box-shadow: 0 4px 12px rgba(46,125,50,0.4); }}
+.wl-sync-btn:disabled {{ opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }}
+.wl-sync-btn.syncing {{ background: linear-gradient(135deg, #1565c0, #0d47a1); }}
+.wl-token-area {{
+    padding: 12px 24px;
+    border-bottom: 1px solid #2a2d3a;
+    flex-shrink: 0;
+}}
+.wl-token-title {{ font-size: 13px; font-weight: 600; color: #8b8fa3; margin-bottom: 8px; }}
+.wl-token-row {{ display: flex; gap: 8px; align-items: center; }}
+.wl-token-input {{
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid #3a3d4a;
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #e8eaed;
+    font-size: 13px;
+    outline: none;
+    font-family: 'Consolas', 'Monaco', monospace;
+    transition: border-color 0.15s;
+}}
+.wl-token-input:focus {{ border-color: #4fc3f7; }}
+.wl-token-input.connected {{ border-color: #2e7d32; background: rgba(46,125,50,0.06); }}
+.wl-save-token-btn {{
+    background: #2e7d32;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+}}
+.wl-token-status {{ font-size: 11px; margin-top: 6px; }}
+.wl-token-status.ok {{ color: #66bb6a; }}
+.wl-token-status.no {{ color: #8b8fa3; }}
+.wl-progress {{ text-align: center; padding: 8px 24px; font-size: 13px; color: #4fc3f7; }}
+.wl-footer-row {{ display: flex; gap: 8px; width: 100%; }}
 .wl-toast {{
     position: fixed;
     bottom: 32px;
@@ -923,6 +981,14 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
             <span class="wl-title">⭐ 管理自选股</span>
             <button class="wl-close" onclick="closeWatchlistPanel()">✕</button>
         </div>
+        <div class="wl-token-area">
+            <div class="wl-token-title">🔑 GitHub Token（用于自动推送配置）</div>
+            <div class="wl-token-row">
+                <input class="wl-token-input" id="ghToken" type="password" placeholder="ghp_xxxx 或 点击右上角连接" />
+                <button class="wl-save-token-btn" id="saveTokenBtn" onclick="saveGhToken()">保存</button>
+            </div>
+            <div class="wl-token-status" id="tokenStatus"></div>
+        </div>
         <div class="wl-add-area">
             <div class="wl-add-title">➕ 添加股票</div>
             <div class="wl-add-row">
@@ -934,12 +1000,18 @@ tr:hover {{ background: rgba(255,255,255,0.03); }}
                 <input class="wl-input" id="addName" placeholder="名称，如 贵州茅台" maxlength="10" />
                 <button class="wl-add-btn" onclick="addStock()">添加</button>
             </div>
-            <div class="wl-hint">💡 添加后下次 Actions 自动运行时会获取最新数据（约每30分钟）</div>
+            <div class="wl-hint">💡 添加后点击下方"同步到 GitHub"自动更新数据</div>
         </div>
         <div class="wl-list" id="watchlistItems"></div>
+        <div id="syncProgress" class="wl-progress" style="display:none"></div>
         <div class="wl-footer">
-            <button class="wl-export-btn" onclick="exportConfig()">📥 导出 watchlist.json（放入仓库触发更新）</button>
-            <button class="wl-reset-btn" onclick="resetToDefault()">恢复默认</button>
+            <div class="wl-footer-row">
+                <button class="wl-sync-btn" id="syncBtn" onclick="syncToGitHub()">🚀 同步到 GitHub</button>
+                <button class="wl-reset-btn" onclick="resetToDefault()">恢复默认</button>
+            </div>
+            <div style="margin-top:8px">
+                <button class="wl-export-btn" style="width:100%" onclick="exportConfig()">📥 手动导出 watchlist.json（备用）</button>
+            </div>
         </div>
     </div>
 </div>
@@ -1203,7 +1275,7 @@ function addStock() {{
     document.getElementById('addCode').value = '';
     document.getElementById('addName').value = '';
     renderWatchlistItems();
-    showToast('✅ 已添加 ' + name + '，导出配置后放入仓库触发更新');
+    showToast('✅ 已添加 ' + name + '，点击"同步到 GitHub"生效');
 }}
 
 function removeStock(index) {{
@@ -1224,7 +1296,6 @@ function resetToDefault() {{
 
 function exportConfig() {{
     var current = getWatchlist() || DEFAULT_WATCHLIST;
-    // 读取页面中嵌入的完整 watchlist（含指数和板块）
     var fullConfig = JSON.parse(document.getElementById('fullWatchlistConfig').textContent);
     fullConfig['自选股'] = current;
     var json = JSON.stringify(fullConfig, null, 4);
@@ -1235,7 +1306,132 @@ function exportConfig() {{
     document.body.appendChild(a); a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('📥 watchlist.json 已下载，放入 data/ 目录后 push 到 GitHub 触发更新');
+    showToast('📥 watchlist.json 已下载');
+}}
+
+// =====================================================
+// GitHub API 自动同步
+// =====================================================
+const GH_TOKEN_KEY = 'stockdash_gh_token';
+const GH_REPO = 'haiwangxing1251/stock-dashboard-2026';
+const GH_API = 'https://api.github.com';
+
+function getGhToken() {{
+    return localStorage.getItem(GH_TOKEN_KEY) || '';
+}}
+
+function saveGhToken() {{
+    var token = document.getElementById('ghToken').value.trim();
+    if (!token) {{ showToast('请输入 GitHub Token'); return; }}
+    localStorage.setItem(GH_TOKEN_KEY, token);
+    updateTokenStatus();
+    showToast('✅ Token 已保存');
+}}
+
+function updateTokenStatus() {{
+    var token = getGhToken();
+    var input = document.getElementById('ghToken');
+    var status = document.getElementById('tokenStatus');
+    var saveBtn = document.getElementById('saveTokenBtn');
+    if (token) {{
+        input.value = token;
+        input.classList.add('connected');
+        saveBtn.textContent = '✓ 已保存';
+        saveBtn.style.background = '#555';
+        status.textContent = '✅ Token 已保存，可直接同步';
+        status.className = 'wl-token-status ok';
+    }} else {{
+        input.classList.remove('connected');
+        saveBtn.textContent = '保存';
+        saveBtn.style.background = '#2e7d32';
+        status.textContent = '⚠️ 未配置 Token，需要先输入保存';
+        status.className = 'wl-token-status no';
+    }}
+}}
+
+function showSyncProgress(msg) {{
+    var el = document.getElementById('syncProgress');
+    el.style.display = 'block';
+    el.textContent = msg;
+}}
+
+function hideSyncProgress() {{
+    document.getElementById('syncProgress').style.display = 'none';
+}}
+
+async function syncToGitHub() {{
+    var token = getGhToken();
+    if (!token) {{
+        showToast('⚠️ 请先输入并保存 GitHub Token');
+        return;
+    }}
+
+    var current = getWatchlist() || DEFAULT_WATCHLIST;
+    var fullConfig = JSON.parse(document.getElementById('fullWatchlistConfig').textContent);
+    fullConfig['自选股'] = current;
+    var newContent = JSON.stringify(fullConfig, null, 4);
+
+    var syncBtn = document.getElementById('syncBtn');
+    syncBtn.disabled = true;
+    syncBtn.classList.add('syncing');
+    syncBtn.textContent = '⏳ 同步中...';
+    showSyncProgress('📡 正在读取仓库当前文件...');
+
+    try {{
+        // Step 1: 获取当前文件 SHA
+        var res = await fetch(GH_API + '/repos/' + GH_REPO + '/contents/data/watchlist.json', {{
+            headers: {{ 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json' }}
+        }});
+        if (!res.ok) {{
+            var errData = await res.json().catch(function() {{ return {{}}; }});
+            if (res.status === 404) {{
+                showToast('⚠️ 仓库中未找到 data/watchlist.json，请手动创建');
+            }} else if (res.status === 401) {{
+                showToast('❌ Token 无效或已过期，请重新输入');
+            }} else {{
+                showToast('❌ API 错误: ' + (errData.message || res.status));
+            }}
+            throw new Error('fetch failed: ' + res.status);
+        }}
+        var fileData = await res.json();
+        var sha = fileData.sha;
+
+        // Step 2: 更新文件内容
+        showSyncProgress('📝 正在上传新的 watchlist.json...');
+        var content = btoa(unescape(encodeURIComponent(newContent)));
+        var putRes = await fetch(GH_API + '/repos/' + GH_REPO + '/contents/data/watchlist.json', {{
+            method: 'PUT',
+            headers: {{
+                'Authorization': 'token ' + token,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            }},
+            body: JSON.stringify({{
+                message: '🔄 更新自选股配置',
+                content: content,
+                sha: sha
+            }})
+        }});
+        if (!putRes.ok) {{
+            var putErr = await putRes.json().catch(function() {{ return {{}}; }});
+            showToast('❌ 上传失败: ' + (putErr.message || putRes.status));
+            throw new Error('put failed: ' + putRes.status);
+        }}
+
+        // Step 3: 触发 Actions（push 事件会自动触发，无需手动 dispatch）
+        showSyncProgress('✅ 配置已推送，Actions 将自动运行更新数据...');
+        showToast('✅ 同步成功！Actions 正在更新数据，约1-2分钟后刷新页面查看');
+
+    }} catch(e) {{
+        if (!e.message.startsWith('fetch') && !e.message.startsWith('put')) {{
+            showToast('❌ 网络错误: ' + e.message);
+        }}
+    }} finally {{
+        syncBtn.disabled = false;
+        syncBtn.classList.remove('syncing');
+        syncBtn.textContent = '🚀 同步到 GitHub';
+        setTimeout(hideSyncProgress, 5000);
+    }}
 }}
 
 function updatePageHint() {{
@@ -1254,9 +1450,10 @@ function escHtml(s) {{
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }}
 
-// 页面加载时检查自定义状态
+// 页面加载时检查自定义状态和 Token
 document.addEventListener('DOMContentLoaded', function() {{
     updatePageHint();
+    updateTokenStatus();
     // ESC 关闭面板
     document.addEventListener('keydown', function(e) {{
         if (e.key === 'Escape') closeWatchlistPanel();
