@@ -134,7 +134,7 @@ def fetch_index_yahoo() -> List[Dict]:
 
 
 # ============ 个股行情（含历史+信号） ============
-STOCK_MAP = {
+_DEFAULT_STOCK_MAP = {
     "600519.SS": "贵州茅台",
     "000858.SZ": "五粮液",
     "601318.SS": "中国平安",
@@ -146,10 +146,25 @@ STOCK_MAP = {
 }
 
 
-def fetch_stock_yahoo() -> List[Dict]:
+def _build_stock_map(watchlist: List[Dict]) -> Dict[str, str]:
+    """从 watchlist.json 自选股列表构建 yfinance ticker -> 名称 映射"""
+    market_suffix = {"sh": "SS", "sz": "SZ"}
+    result = {}
+    for s in watchlist:
+        code = s.get("code", "").strip()
+        name = s.get("name", code)
+        market = s.get("market", "sh").lower()
+        suffix = market_suffix.get(market, "SS")
+        ticker = f"{code}.{suffix}"
+        result[ticker] = name
+    return result if result else _DEFAULT_STOCK_MAP
+
+
+def fetch_stock_yahoo(watchlist: List[Dict] = None) -> List[Dict]:
     """通过 yfinance 获取个股行情（含技术指标 MACD/KDJ/布林带）"""
+    stock_map = _build_stock_map(watchlist) if watchlist else _DEFAULT_STOCK_MAP
     results = []
-    for ticker, name in STOCK_MAP.items():
+    for ticker, name in stock_map.items():
         try:
             hist = _yf_history(ticker, period="60d")
             if hist is None or len(hist) < 2:
@@ -329,6 +344,7 @@ def fetch_stock_yahoo() -> List[Dict]:
                 "signal_color": signal_color,
                 "history_5d": [round(float(p), 2) for p in prices[-5:]],
                 "history_20d": [round(float(p), 2) for p in prices[-20:]] if len(prices) >= 20 else [round(float(p), 2) for p in prices],
+                "market": "sh" if ticker.endswith(".SS") else "sz",
             })
             print(f"  ✅ 个股 {name}: {price:.2f} ({change_pct:+.2f}%) 信号:{signal}")
             time.sleep(1.5)
@@ -435,6 +451,16 @@ def fetch_all(watchlist_path: str) -> Dict[str, Any]:
     print("=" * 50)
     print("📊 股市数据抓取启动（yfinance / Yahoo Finance）")
 
+    # 读取 watchlist.json 获取自选股列表
+    watchlist_stocks = []
+    try:
+        with open(watchlist_path, "r", encoding="utf-8") as f:
+            wl_config = json.load(f)
+        watchlist_stocks = wl_config.get("自选股", [])
+        print(f"   读取自选股: {len(watchlist_stocks)} 只")
+    except Exception as e:
+        print(f"   ⚠️ 读取 watchlist.json 失败，使用默认列表: {e}")
+
     data = {}
 
     print("📊 抓取指数行情...")
@@ -445,7 +471,7 @@ def fetch_all(watchlist_path: str) -> Dict[str, Any]:
     data["overview"] = fetch_market_overview_yahoo(data["indices"])
 
     print("🔍 抓取个股行情...")
-    data["stocks"] = fetch_stock_yahoo()
+    data["stocks"] = fetch_stock_yahoo(watchlist_stocks)
     print(f"   → {len(data['stocks'])} 只个股")
 
     print("🏭 抓取板块ETF...")

@@ -1189,7 +1189,7 @@ function renderWatchlistItems() {{
 
 function addStock() {{
     var market = document.getElementById('addMarket').value;
-    var code = document.getElementById('addCode').value.trim().replace(/\D/g,'');
+    var code = document.getElementById('addCode').value.trim().replace(/\\D/g,'');
     var name = document.getElementById('addName').value.trim();
     if (!code || code.length < 4) {{ showToast('请输入有效的股票代码（4-6位数字）'); return; }}
     if (!name) {{ showToast('请输入股票名称'); return; }}
