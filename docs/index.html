@@ -122,7 +122,7 @@ body {
 .sentiment-bar-fill {
     height: 100%;
     border-radius: 5px;
-    width: 62%;
+    width: 55%;
     background: linear-gradient(90deg, #66bb6a, #ffd54f 50%, #ef5350);
 }
 .analysis-text {
@@ -615,7 +615,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
 <!-- Header -->
 <div class="header">
     <h1>A 股行情仪表盘</h1>
-    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-07-22 13:13:32</span></p>
+    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-07-22 15:53:36</span></p>
 </div>
 
 <!-- Market Overview -->
@@ -662,7 +662,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">🧠</span> 市场情绪分析</div>
     <div class="sentiment-section">
         <div class="sentiment-gauge">
-            <div class="sentiment-score">62</div>
+            <div class="sentiment-score">55</div>
             <div class="sentiment-label">中性偏多</div>
             <div class="sentiment-desc">指数分化，整体略偏乐观</div>
             <div class="sentiment-bar-bg">
@@ -670,10 +670,12 @@ tr:hover { background: rgba(255,255,255,0.03); }
             </div>
         </div>
         <div class="analysis-text">
-📌 **市场情绪：中性偏多**（综合评分 62/100）
+📌 **市场情绪：中性偏多**（综合评分 55/100）
    指数分化，整体略偏乐观
-📈 **领涨指数**：深证成指(+0.61%)、沪深300(+5.34%)
-🏢 **活跃板块ETF**：半导体ETF(+5.59%)、黄金ETF(+1.64%)、上证50ETF(+1.17%)
+📈 **领涨指数**：沪深300(+4.15%)
+📉 **领跌指数**：深证成指(-1.42%)
+🔥 **强势个股**：五粮液(偏多)
+🏢 **活跃板块ETF**：黄金ETF(+1.04%)、半导体ETF(+0.70%)、医药ETF(+0.27%)
 
 💡 **操作建议**：市场方向不明，建议观望为主，轻仓操作，注意风险控制。
 
@@ -692,28 +694,28 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
                 <div class="idx-name">上证指数</div>
                 <span class="trend-tag" style="color:#ef5350;background:#ef535018;border:1px solid #ef535033">上升趋势</span>
             </div>
-            <div class="idx-price" style="color:#ef5350">3883.58</div>
-            <div class="idx-change" style="color:#ef5350">+0.50%</div>
+            <div class="idx-price" style="color:#ef5350">3867.03</div>
+            <div class="idx-change" style="color:#ef5350">+0.07%</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
                 <div class="idx-amount">MA5 站上</div>
                 <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
-  <polyline points="0.0,2.4 30.0,38.0 60.0,28.3 90.0,7.8 120.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="120.0" cy="2.0" r="3" fill="#ef5350"/>
+  <polyline points="0.0,2.0 30.0,38.0 60.0,28.2 90.0,7.5 120.0,6.7" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="6.7" r="3" fill="#66bb6a"/>
 </svg></div>
             </div>
         </div>
         <div class="idx-card">
             <div style="display:flex;justify-content:space-between;align-items:center">
                 <div class="idx-name">深证成指</div>
-                <span class="trend-tag" style="color:#ef5350;background:#ef535018;border:1px solid #ef535033">上升趋势</span>
+                <span class="trend-tag" style="color:#ffd54f;background:#ffd54f18;border:1px solid #ffd54f33">短期回调</span>
             </div>
-            <div class="idx-price" style="color:#ef5350">14351.91</div>
-            <div class="idx-change" style="color:#ef5350">+0.61%</div>
+            <div class="idx-price" style="color:#66bb6a">14061.44</div>
+            <div class="idx-change" style="color:#66bb6a">-1.42%</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
                 <div class="idx-amount">MA5 站上</div>
                 <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
-  <polyline points="0.0,2.0 30.0,34.0 60.0,38.0 90.0,11.2 120.0,7.6" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="120.0" cy="7.6" r="3" fill="#66bb6a"/>
+  <polyline points="0.0,2.0 30.0,34.0 60.0,38.0 90.0,11.2 120.0,19.5" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="19.5" r="3" fill="#66bb6a"/>
 </svg></div>
             </div>
         </div>
@@ -722,13 +724,13 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
                 <div class="idx-name">沪深300</div>
                 <span class="trend-tag" style="color:#ef5350;background:#ef535018;border:1px solid #ef535033">上升趋势</span>
             </div>
-            <div class="idx-price" style="color:#ef5350">4771.1</div>
-            <div class="idx-change" style="color:#ef5350">+5.34%</div>
+            <div class="idx-price" style="color:#ef5350">4717.24</div>
+            <div class="idx-change" style="color:#ef5350">+4.15%</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
                 <div class="idx-amount">MA5 站上</div>
                 <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
-  <polyline points="0.0,2.0 30.0,3.3 60.0,15.2 90.0,38.0 120.0,5.4" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="120.0" cy="5.4" r="3" fill="#66bb6a"/>
+  <polyline points="0.0,2.0 30.0,3.3 60.0,15.2 90.0,38.0 120.0,12.7" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="12.7" r="3" fill="#66bb6a"/>
 </svg></div>
             </div>
         </div>
@@ -742,113 +744,113 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
         
         <div class="tech-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <span style="font-weight:600;font-size:14px">平安银行</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">10.85</span>
+                <span style="font-weight:600;font-size:14px">五粮液</span>
+                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">74.75</span>
             </div>
             <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.044</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.036</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.008</span>
+                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.131</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.105</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.026</span>
             </div>
             <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:54 D:51</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:60(偏强)</span>
+                <span class="num" style="font-size:11px">K:59 D:53</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:70(偏强)</span>
             </div>
             <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">11.04</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">10.52</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">10.01</span>
+                <span class="num" style="font-size:11px;color:#ef5350">75.72</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">71.82</span>
+                <span class="num" style="font-size:11px;color:#66bb6a">67.92</span>
             </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:81.6%;left:65.28%"></div>
-                <div class="bb-marker" style="left:81.6%">10.85</div></div>
+            <div class="bb-bar"><div class="bb-bar-fill" style="width:87.6%;left:70.08%"></div>
+                <div class="bb-marker" style="left:87.6%">74.75</div></div>
         </div>
         <div class="tech-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <span style="font-weight:600;font-size:14px">中国平安</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">53.34</span>
+                <span style="font-weight:600;font-size:14px">平安银行</span>
+                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">10.98</span>
             </div>
             <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.285</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.228</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.057</span>
+                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.055</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.044</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.011</span>
             </div>
             <div class="tech-row"><span class="tech-label">KDJ</span>
                 <span class="num" style="font-size:11px">K:60 D:53</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:72(偏强)</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:73(偏强)</span>
             </div>
             <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">53.15</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">49.96</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">46.77</span>
+                <span class="num" style="font-size:11px;color:#ef5350">11.07</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">10.53</span>
+                <span class="num" style="font-size:11px;color:#66bb6a">9.99</span>
             </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:100%;left:80.0%"></div>
-                <div class="bb-marker" style="left:100%">53.34</div></div>
+            <div class="bb-bar"><div class="bb-bar-fill" style="width:91.7%;left:73.36%"></div>
+                <div class="bb-marker" style="left:91.7%">10.98</div></div>
         </div>
         <div class="tech-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
                 <span style="font-weight:600;font-size:14px">招商银行</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">38.14</span>
+                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">38.71</span>
             </div>
             <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.391</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.313</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.078</span>
+                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.436</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.349</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.087</span>
             </div>
             <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:53 D:51</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:57(偏强)</span>
+                <span class="num" style="font-size:11px">K:59 D:53</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:71(偏强)</span>
             </div>
             <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">39.07</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">36.66</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">34.25</span>
+                <span class="num" style="font-size:11px;color:#ef5350">39.18</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">36.69</span>
+                <span class="num" style="font-size:11px;color:#66bb6a">34.2</span>
             </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:80.7%;left:64.56%"></div>
-                <div class="bb-marker" style="left:80.7%">38.14</div></div>
+            <div class="bb-bar"><div class="bb-bar-fill" style="width:90.6%;left:72.48%"></div>
+                <div class="bb-marker" style="left:90.6%">38.71</div></div>
         </div>
         <div class="tech-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-                <span style="font-weight:600;font-size:14px">五粮液</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#66bb6a">73.81</span>
+                <span style="font-weight:600;font-size:14px">中国平安</span>
+                <span class="num" style="font-size:13px;font-weight:600;color:#ef5350">53.95</span>
             </div>
             <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.056</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.045</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.011</span>
+                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:0.333</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:0.267</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">柱:+0.066</span>
             </div>
             <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:55 D:52</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:62(偏强)</span>
+                <span class="num" style="font-size:11px">K:63 D:54</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:80(偏强)</span>
             </div>
             <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">75.55</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">71.77</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">67.99</span>
+                <span class="num" style="font-size:11px;color:#ef5350">53.32</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">49.99</span>
+                <span class="num" style="font-size:11px;color:#66bb6a">46.67</span>
             </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:77.0%;left:61.6%"></div>
-                <div class="bb-marker" style="left:77.0%">73.81</div></div>
+            <div class="bb-bar"><div class="bb-bar-fill" style="width:100%;left:80.0%"></div>
+                <div class="bb-marker" style="left:100%">53.95</div></div>
         </div>
         <div class="tech-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
                 <span style="font-weight:600;font-size:14px">宁德时代</span>
-                <span class="num" style="font-size:13px;font-weight:600;color:#66bb6a">376.57</span>
+                <span class="num" style="font-size:13px;font-weight:600;color:#66bb6a">372.26</span>
             </div>
             <div class="tech-row"><span class="tech-label">MACD</span>
-                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:-6.406</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:-5.124</span>
-                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">柱:-1.282</span>
+                <span class="num" style="font-size:11px;color:#4fc3f7">DIF:-6.749</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">DEA:-5.400</span>
+                <span class="num" style="font-size:11px;color:#66bb6a;font-weight:600">柱:-1.349</span>
             </div>
             <div class="tech-row"><span class="tech-label">KDJ</span>
-                <span class="num" style="font-size:11px">K:56 D:52</span>
-                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:64(偏强)</span>
+                <span class="num" style="font-size:11px">K:53 D:51</span>
+                <span class="num" style="font-size:11px;color:#ef5350;font-weight:600">J:56(偏强)</span>
             </div>
             <div class="tech-row"><span class="tech-label">布林带</span>
-                <span class="num" style="font-size:11px;color:#ef5350">400.39</span>
-                <span class="num" style="font-size:11px;color:#8b8fa3">375.21</span>
-                <span class="num" style="font-size:11px;color:#66bb6a">350.03</span>
+                <span class="num" style="font-size:11px;color:#ef5350">400.2</span>
+                <span class="num" style="font-size:11px;color:#8b8fa3">374.99</span>
+                <span class="num" style="font-size:11px;color:#66bb6a">349.79</span>
             </div>
-            <div class="bb-bar"><div class="bb-bar-fill" style="width:52.7%;left:42.160000000000004%"></div>
-                <div class="bb-marker" style="left:52.7%">376.57</div></div>
+            <div class="bb-bar"><div class="bb-bar-fill" style="width:44.6%;left:35.68%"></div>
+                <div class="bb-marker" style="left:44.6%">372.26</div></div>
         </div>
     </div>
 </div>
@@ -877,78 +879,78 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
             <tbody>
                 
         <tr>
-            <td class="stock-name">平安银行</td>
-            <td style="font-size:12px;color:#8b8fa3">000001</td>
-            <td class="num" style="color:#ef5350;font-weight:600">10.85</td>
-            <td class="num" style="color:#ef5350">+0.09%</td>
-            <td><span class="signal-badge" style="background:#e8eaed22;color:#e8eaed;border:1px solid #e8eaed44">中性</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">71</td>
-            <td class="num" style="font-size:12px;color:#ef5350">+0.008</td>
-            <td class="num" style="font-size:12px;color:#8b8fa3">60</td>
-            <td class="num" style="font-size:12px">0.5</td>
+            <td class="stock-name">五粮液</td>
+            <td style="font-size:12px;color:#8b8fa3">000858</td>
+            <td class="num" style="color:#ef5350;font-weight:600">74.75</td>
+            <td class="num" style="color:#ef5350">+0.50%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px;color:#4fc3f7">61</td>
+            <td class="num" style="font-size:12px;color:#ef5350">+0.026</td>
+            <td class="num" style="font-size:12px;color:#8b8fa3">70</td>
+            <td class="num" style="font-size:12px">0.8</td>
             <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,28.0 20.0,26.8 40.0,2.0 60.0,19.3 80.0,18.1" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="18.1" r="3" fill="#ef5350"/>
+  <polyline points="0.0,19.5 20.0,28.0 40.0,2.0 60.0,15.9 80.0,13.1" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="13.1" r="3" fill="#ef5350"/>
 </svg></td>
         </tr>
         <tr>
-            <td class="stock-name">中国平安</td>
-            <td style="font-size:12px;color:#8b8fa3">601318</td>
-            <td class="num" style="color:#ef5350;font-weight:600">53.34</td>
-            <td class="num" style="color:#ef5350">+0.85%</td>
-            <td><span class="signal-badge" style="background:#e8eaed22;color:#e8eaed;border:1px solid #e8eaed44">中性</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">80</td>
-            <td class="num" style="font-size:12px;color:#ef5350">+0.057</td>
-            <td class="num" style="font-size:12px;color:#8b8fa3">72</td>
-            <td class="num" style="font-size:12px">0.6</td>
+            <td class="stock-name">平安银行</td>
+            <td style="font-size:12px;color:#8b8fa3">000001</td>
+            <td class="num" style="color:#ef5350;font-weight:600">10.98</td>
+            <td class="num" style="color:#ef5350">+1.29%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px;color:#4fc3f7">74</td>
+            <td class="num" style="font-size:12px;color:#ef5350">+0.011</td>
+            <td class="num" style="font-size:12px;color:#8b8fa3">73</td>
+            <td class="num" style="font-size:12px">0.8</td>
             <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,28.0 20.0,27.7 40.0,3.1 60.0,6.4 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="0.0,28.0 20.0,26.8 40.0,2.0 60.0,19.3 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
 </svg></td>
         </tr>
         <tr>
             <td class="stock-name">招商银行</td>
             <td style="font-size:12px;color:#8b8fa3">600036</td>
-            <td class="num" style="color:#ef5350;font-weight:600">38.14</td>
-            <td class="num" style="color:#ef5350">+0.39%</td>
-            <td><span class="signal-badge" style="background:#e8eaed22;color:#e8eaed;border:1px solid #e8eaed44">中性</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">72</td>
-            <td class="num" style="font-size:12px;color:#ef5350">+0.078</td>
-            <td class="num" style="font-size:12px;color:#8b8fa3">57</td>
-            <td class="num" style="font-size:12px">0.5</td>
+            <td class="num" style="color:#ef5350;font-weight:600">38.71</td>
+            <td class="num" style="color:#ef5350">+1.90%</td>
+            <td><span class="signal-badge" style="background:#ef535022;color:#ef5350;border:1px solid #ef535044">偏多</span></td>
+            <td class="num" style="font-size:12px;color:#4fc3f7">74</td>
+            <td class="num" style="font-size:12px;color:#ef5350">+0.087</td>
+            <td class="num" style="font-size:12px;color:#8b8fa3">71</td>
+            <td class="num" style="font-size:12px">0.9</td>
             <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,28.0 20.0,20.7 40.0,2.0 60.0,21.3 80.0,18.1" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="18.1" r="3" fill="#ef5350"/>
+  <polyline points="0.0,28.0 20.0,20.7 40.0,2.0 60.0,21.3 80.0,6.2" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="6.2" r="3" fill="#ef5350"/>
 </svg></td>
         </tr>
         <tr>
-            <td class="stock-name">五粮液</td>
-            <td style="font-size:12px;color:#8b8fa3">000858</td>
-            <td class="num" style="color:#66bb6a;font-weight:600">73.81</td>
-            <td class="num" style="color:#66bb6a">-0.77%</td>
-            <td><span class="signal-badge" style="background:#66bb6a22;color:#66bb6a;border:1px solid #66bb6a44">偏空</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">58</td>
-            <td class="num" style="font-size:12px;color:#ef5350">+0.011</td>
-            <td class="num" style="font-size:12px;color:#8b8fa3">62</td>
-            <td class="num" style="font-size:12px">0.5</td>
+            <td class="stock-name">中国平安</td>
+            <td style="font-size:12px;color:#8b8fa3">601318</td>
+            <td class="num" style="color:#ef5350;font-weight:600">53.95</td>
+            <td class="num" style="color:#ef5350">+2.00%</td>
+            <td><span class="signal-badge" style="background:#e8eaed22;color:#e8eaed;border:1px solid #e8eaed44">中性</span></td>
+            <td class="num" style="font-size:12px;color:#4fc3f7">81</td>
+            <td class="num" style="font-size:12px;color:#ef5350">+0.066</td>
+            <td class="num" style="font-size:12px;color:#8b8fa3">80</td>
+            <td class="num" style="font-size:12px">0.8</td>
             <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,19.5 20.0,28.0 40.0,2.0 60.0,15.9 80.0,20.2" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="20.2" r="3" fill="#66bb6a"/>
+  <polyline points="0.0,28.0 20.0,27.8 40.0,7.7 60.0,10.4 80.0,2.0" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="2.0" r="3" fill="#ef5350"/>
 </svg></td>
         </tr>
         <tr>
             <td class="stock-name">宁德时代</td>
             <td style="font-size:12px;color:#8b8fa3">300750</td>
-            <td class="num" style="color:#66bb6a;font-weight:600">376.57</td>
-            <td class="num" style="color:#66bb6a">-1.47%</td>
+            <td class="num" style="color:#66bb6a;font-weight:600">372.26</td>
+            <td class="num" style="color:#66bb6a">-2.60%</td>
             <td><span class="signal-badge" style="background:#66bb6a22;color:#66bb6a;border:1px solid #66bb6a44">偏空</span></td>
-            <td class="num" style="font-size:12px;color:#4fc3f7">48</td>
-            <td class="num" style="font-size:12px;color:#66bb6a">-1.282</td>
-            <td class="num" style="font-size:12px;color:#8b8fa3">64</td>
-            <td class="num" style="font-size:12px">0.5</td>
+            <td class="num" style="font-size:12px;color:#4fc3f7">46</td>
+            <td class="num" style="font-size:12px;color:#66bb6a">-1.349</td>
+            <td class="num" style="font-size:12px;color:#8b8fa3">56</td>
+            <td class="num" style="font-size:12px">0.8</td>
             <td><svg width="80" height="30" viewBox="0 0 80 30" style="display:block">
-  <polyline points="0.0,20.7 20.0,28.0 40.0,8.8 60.0,2.0 80.0,8.6" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="80.0" cy="8.6" r="3" fill="#ef5350"/>
+  <polyline points="0.0,20.7 20.0,28.0 40.0,8.8 60.0,2.0 80.0,13.6" fill="none" stroke="#ef5350" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="80.0" cy="13.6" r="3" fill="#ef5350"/>
 </svg></td>
         </tr>
             </tbody>
@@ -970,79 +972,79 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
             <tbody>
                 
         <tr>
-            <td class="sector-name">半导体ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+5.59%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:100.0%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
-        </tr>
-        <tr>
             <td class="sector-name">黄金ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">商品ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.64%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:29.338103756708406%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.04%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:29.13165266106443%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
-            <td class="sector-name">上证50ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.17%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:20.930232558139533%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
-        </tr>
-        <tr>
-            <td class="sector-name">中证500ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+1.14%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:20.393559928443647%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
-        </tr>
-        <tr>
-            <td class="sector-name">科创50ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.99%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:17.71019677996422%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
-        </tr>
-        <tr>
-            <td class="sector-name">军工ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.83%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:14.847942754919499%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
-        </tr>
-        <tr>
-            <td class="sector-name">沪深300ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.73%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:13.059033989266547%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
-        </tr>
-        <tr>
-            <td class="sector-name">沪深300ETF(华)<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.72%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:12.880143112701253%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="sector-name">半导体ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.70%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:19.607843137254903%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
             <td class="sector-name">医药ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.53%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:9.481216457960645%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.27%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:7.563025210084034%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
-            <td class="sector-name">中证1000ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.34%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:6.082289803220036%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="sector-name">上证50ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.23%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:6.442577030812326%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
-            <td class="sector-name">深证100ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#ef5350;font-weight:600;width:80px">+0.18%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:3.2200357781753133%;background:#ef5350;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="sector-name">沪深300ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.46%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:12.885154061624652%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
-            <td class="sector-name">创业板ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
-            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.22%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:3.9355992844364938%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="sector-name">沪深300ETF(华)<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.50%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:14.005602240896359%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
-            <td class="sector-name">创新药ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
-            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.34%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:6.082289803220036%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="sector-name">军工ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.64%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:17.92717086834734%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">中证500ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.67%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:18.767507002801125%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
             <td class="sector-name">证券ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
-            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.89%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:15.921288014311271%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-0.80%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:22.408963585434176%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">中证1000ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-1.43%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:40.056022408963585%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">深证100ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-1.68%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:47.05882352941176%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
         <tr>
             <td class="sector-name">新能源车ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
-            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-1.20%</td>
-            <td style="width:200px"><div class="bar-container"><div style="width:21.46690518783542%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-1.71%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:47.89915966386555%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">科创50ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-3.03%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:84.87394957983193%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">创业板ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">指数ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-3.32%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:92.99719887955182%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
+        </tr>
+        <tr>
+            <td class="sector-name">创新药ETF<span style="font-size:10px;color:#8b8fa3;margin-left:4px">行业ETF</span></td>
+            <td class="num" style="color:#66bb6a;font-weight:600;width:80px">-3.57%</td>
+            <td style="width:200px"><div class="bar-container"><div style="width:100.0%;background:#66bb6a;border-radius:4px;" class="bar-fill"></div></div></td>
         </tr>
             </tbody>
         </table>
@@ -1140,7 +1142,7 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
 
 <div class="footer">
     <p>由 GitHub Actions 自动生成 &middot; WorkBuddy AI</p>
-    <p data-utc="2026-07-22T05:13:32Z"></p>
+    <p data-utc="2026-07-22T07:53:36Z"></p>
 </div>
 
 </div>
