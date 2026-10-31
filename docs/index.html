@@ -80,8 +80,8 @@ body {
     height: 8px; border-radius: 4px; overflow: hidden; display: flex;
     margin-top: 12px; background: #2a2d3a;
 }
-.ratio-up { background: #ef5350; width: 50.0%; }
-.ratio-down { background: #66bb6a; width: 50.0%; }
+.ratio-up { background: #ef5350; width: 44.4%; }
+.ratio-down { background: #66bb6a; width: 55.6%; }
 .ratio-label { display: flex; justify-content: space-between; font-size: 12px; color: #8b8fa3; margin-top: 6px; }
 
 /* ---- Sentiment ---- */
@@ -615,7 +615,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
 <!-- Header -->
 <div class="header">
     <h1>A 股行情仪表盘</h1>
-    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-10-31 06:45:22</span></p>
+    <p>数据来源: Yahoo Finance &middot; 自动更新 &middot; <span id="update-time">2026-10-31 09:56:38</span></p>
 </div>
 
 <!-- Market Overview -->
@@ -623,11 +623,11 @@ tr:hover { background: rgba(255,255,255,0.03); }
     <div class="card-title"><span class="icon">📈</span> 市场总览</div>
     <div class="overview-grid">
         <div class="stat-box stat-up">
-            <div class="stat-value">2266</div>
+            <div class="stat-value">2014</div>
             <div class="stat-label">上涨</div>
         </div>
         <div class="stat-box stat-down">
-            <div class="stat-value">2266</div>
+            <div class="stat-value">2518</div>
             <div class="stat-label">下跌</div>
         </div>
         <div class="stat-box stat-flat">
@@ -652,8 +652,8 @@ tr:hover { background: rgba(255,255,255,0.03); }
         <div class="ratio-down"></div>
     </div>
     <div class="ratio-label">
-        <span>上涨 50.0%</span>
-        <span>下跌 50.0%</span>
+        <span>上涨 44.4%</span>
+        <span>下跌 55.6%</span>
     </div>
 </div>
 
@@ -672,6 +672,7 @@ tr:hover { background: rgba(255,255,255,0.03); }
         <div class="analysis-text">
 📌 **市场情绪：中性偏空**（综合评分 39/100）
    多数指数下跌，需谨慎
+📉 **领跌指数**：上证指数(-1.44%)、深证成指(-2.73%)
 🔥 **强势个股**：五粮液(强烈买入)、宁德时代(偏多)
 🏢 **活跃板块ETF**：创业板ETF(+nan%)、沪深300ETF(+nan%)、上证50ETF(+nan%)
 
@@ -690,30 +691,30 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
         <div class="idx-card">
             <div style="display:flex;justify-content:space-between;align-items:center">
                 <div class="idx-name">上证指数</div>
-                <span class="trend-tag" style="color:#8b8fa3;background:#8b8fa318;border:1px solid #8b8fa333">震荡整理</span>
+                <span class="trend-tag" style="color:#66bb6a;background:#66bb6a18;border:1px solid #66bb6a33">下降趋势</span>
             </div>
-            <div class="idx-price" style="color:#e8eaed">nan</div>
-            <div class="idx-change" style="color:#e8eaed">0.00%</div>
+            <div class="idx-price" style="color:#66bb6a">3599.02</div>
+            <div class="idx-change" style="color:#66bb6a">-1.44%</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
                 <div class="idx-amount">MA5 跌破</div>
                 <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
-  <polyline points="0.0,2.0 30.0,38.0 60.0,13.7 90.0,35.7 120.0,nan" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="120.0" cy="nan" r="3" fill="#66bb6a"/>
+  <polyline points="0.0,2.0 30.0,20.0 60.0,7.9 90.0,18.8 120.0,38.0" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="38.0" r="3" fill="#66bb6a"/>
 </svg></div>
             </div>
         </div>
         <div class="idx-card">
             <div style="display:flex;justify-content:space-between;align-items:center">
                 <div class="idx-name">深证成指</div>
-                <span class="trend-tag" style="color:#8b8fa3;background:#8b8fa318;border:1px solid #8b8fa333">震荡整理</span>
+                <span class="trend-tag" style="color:#66bb6a;background:#66bb6a18;border:1px solid #66bb6a33">下降趋势</span>
             </div>
-            <div class="idx-price" style="color:#e8eaed">nan</div>
-            <div class="idx-change" style="color:#e8eaed">0.00%</div>
+            <div class="idx-price" style="color:#66bb6a">10833.78</div>
+            <div class="idx-change" style="color:#66bb6a">-2.73%</div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
                 <div class="idx-amount">MA5 跌破</div>
                 <div><svg width="120" height="40" viewBox="0 0 120 40" style="display:block">
-  <polyline points="0.0,2.0 30.0,28.2 60.0,7.6 90.0,38.0 120.0,nan" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="120.0" cy="nan" r="3" fill="#66bb6a"/>
+  <polyline points="0.0,2.0 30.0,16.8 60.0,5.1 90.0,22.4 120.0,38.0" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="120.0" cy="38.0" r="3" fill="#66bb6a"/>
 </svg></div>
             </div>
         </div>
@@ -1125,7 +1126,7 @@ _⚠️ 以上分析仅基于技术指标，不构成投资建议。_
 
 <div class="footer">
     <p>由 GitHub Actions 自动生成 &middot; WorkBuddy AI</p>
-    <p data-utc="2026-10-30T22:45:22Z"></p>
+    <p data-utc="2026-10-31T01:56:38Z"></p>
 </div>
 
 </div>
